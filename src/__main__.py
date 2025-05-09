@@ -2,8 +2,8 @@ from datetime import datetime
 import json
 from paho.mqtt.client import Client
 import time
-from mqttClient import MQTTClient
-from personFasada import PersonFasada
+from app.mqttClient import MQTTClient
+from app.personFasada import PersonFasada
 
 
 client = MQTTClient(client_id="myclient", broker="127.0.0.1")
