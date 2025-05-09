@@ -5,11 +5,11 @@ import time
 
 class PersonFasada:
     persons = []
-    def __init__(self):
+    def __init__(self) -> None:
         self.persons=[]
         #with open("persons.json", "r") as file:
            # self.persons = json.load(file)
-    def ValidateData(self, data):
+    def ValidateData(self, data:dict) -> bool:
         try:
             for x in data:
                 if len(x)<3:
@@ -19,7 +19,7 @@ class PersonFasada:
             return True
         except:
             return False
-    def AddPerson(self, data):
+    def AddPerson(self, data:dict) -> None:
         data=json.loads(data)
         ok = True
         for person in self.persons:
@@ -28,7 +28,7 @@ class PersonFasada:
         if ok and self.ValidateData(data):
             self.persons.append(data)
 
-    def ModifyPerson(self, data):
+    def ModifyPerson(self, data:dict) -> None:
         data=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
@@ -37,18 +37,18 @@ class PersonFasada:
                     person[key]=value
                 person.data_modyfikacji = datetime.now().isoformat()
 
-    def RemovePerson(self, data):
+    def RemovePerson(self, data:dict) -> None:
         data=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 self.persons.remove(person)
-    def GetPerson(self, data):
+    def GetPerson(self, data:dict) -> json:
         data=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 return json.dumps(person)
-    def GetPersons(self):
+    def GetPersons(self) -> json:
         return json.dumps(self.persons)
-    def GetPersonsCount(self):
+    def GetPersonsCount(self) -> json:
         return json.dumps(len(self.persons))
 

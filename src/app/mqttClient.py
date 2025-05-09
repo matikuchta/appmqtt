@@ -6,21 +6,20 @@ from app.personFasada import PersonFasada
 
 class MQTTClient:
     pf=PersonFasada()
-    subscribers = []
-    def __init__(self, client_id, broker, port=1883, keepalive=60):
+    #subscribers = []
+    def __init__(self, client_id:str, broker:str, port:int=1883, keepalive:int=60) -> None:
         self.client = Client(client_id=client_id)
         self.broker = broker
         self.port = port
         self.keepalive = keepalive
-        # Set callbacks
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.on_disconnect = self.on_disconnect
-    def on_connect(self, client, userdata, flags, reasonCode):
+    def on_connect(self, broker:str, port:int, keepalive:int, reasonCode:str) -> None:
         print("Connected with reason code:", reasonCode)
-    def on_disconnect(self, client, userdata, flags, reasonCode):
+    def on_disconnect(self, reasonCode:str) -> None:
         print("Disconnected with reason code:", reasonCode)
-    def on_message(self, client, userdata, msg):
+    def on_message(self, client, userdata, msg:str)-> None:
         print(f"RECIEVED\n---TOPIC---\n{msg.topic}\n---MESSAGE---\n{msg.payload.decode()}")
         mes = msg.payload.decode()
         #mes=mes["data"]
@@ -70,18 +69,18 @@ class MQTTClient:
                 #file.write(json.dumps(self.pf.persons))
 
 
-    def connect(self):
+    def connect(self) -> None:
         try:
             self.client.connect(self.broker, self.port, self.keepalive)
             print("Connected to broker")
         except Exception as e:
             print(f"Connect error: {e}")
-    def disconnect(self):
+    def disconnect(self) -> None:
         self.client.loop_stop()
         self.client.disconnect()
-    def subscribe(self, topic):
+    def subscribe(self, topic:str) -> None:
         print(f"\nSubscribed to topic '{topic}'")
         self.client.subscribe(topic)
-    def publish(self, topic, message):
+    def publish(self, topic:str, message:str) -> None:
         self.client.publish(topic, message)
         print(f"PUBLISHED\n---TOPIC---\n{topic}\n---MESSAGE---\n{message}\n")
