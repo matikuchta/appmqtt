@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 from paho.mqtt.client import Client
 import time
-from personFasada import PersonFasada
+from app.personFasada import PersonFasada
 
 class MQTTClient:
     pf=PersonFasada()
