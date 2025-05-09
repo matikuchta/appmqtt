@@ -1,2 +1,4 @@
 persons.json
 env/
+.vscode
+src/app/__pycache__
