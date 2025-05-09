@@ -2,3 +2,4 @@ persons.json
 env/
 .vscode
 src/app/__pycache__
+__pycache__

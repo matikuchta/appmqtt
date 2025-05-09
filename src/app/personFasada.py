@@ -2,8 +2,12 @@ from datetime import datetime
 import json
 from paho.mqtt.client import Client
 import time
-from _app.subscriber import ISubscriber
-from _app.publisher import IPublisher
+from typing import TYPE_CHECKING
+
+
+from app.publisher import IPublisher
+from app.subscriber import ISubscriber
+# if TYPE_CHECKING:
 
 class PersonFasada(ISubscriber):
     persons = []
