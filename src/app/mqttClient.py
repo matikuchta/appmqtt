@@ -8,7 +8,7 @@ from app.subscriber import ISubscriber
 from app.personFasada import PersonFasada
 
 class MQTTClient(IPublisher):
-    pf=PersonFasada()
+    pf=PersonFasada("src/persons.json")
     subscribers:dict[str, list[ISubscriber]]={}
     def __init__(self, client_id:str, broker:str, port:int=1883, keepalive:int=60) -> None:
         self.client = Client(client_id=client_id)
