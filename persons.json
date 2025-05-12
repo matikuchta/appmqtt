@@ -1,0 +1,22 @@
+[
+  {
+    "imie": "adam",
+    "nazwisko": "nowak",
+    "pesel": "12345678901",
+    "stanowisko": "kierownik",
+    "data_zatrudnienia": "2025-05-08T10:09:44.421447",
+    "data_urodzenia": "2025-05-08T10:09:44.421447",
+    "data_utworzenia": "2025-05-08T10:09:44.421447",
+    "data_modyfikacji": "2025-05-12T10:32:33.854899"
+  },
+  {
+    "imie": "jan",
+    "nazwisko": "kowalski",
+    "pesel": "12345678900",
+    "stanowisko": "kierownik",
+    "data_zatrudnienia": "2025-05-08T10:09:44.421447",
+    "data_urodzenia": "2025-05-08T10:09:44.421447",
+    "data_utworzenia": "2025-05-08T10:09:44.421447",
+    "data_modyfikacji": "2025-05-08T10:09:44.421447"
+  }
+]

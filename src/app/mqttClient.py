@@ -2,9 +2,10 @@ from datetime import datetime
 import json
 from paho.mqtt.client import Client
 import time
-from app.personFasada import PersonFasada
+import logging as log
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
+from app.personFasada import PersonFasada
 
 class MQTTClient(IPublisher):
     pf=PersonFasada()
@@ -22,10 +23,11 @@ class MQTTClient(IPublisher):
     def on_disconnect(self, reasonCode:str) -> None:
         print("Disconnected with reason code:", reasonCode)
     def on_message(self, client, userdata, msg)-> None:
-        subs=self.subscribers[msg.topic]
+        subs=self.subscribers.get(msg.topic, [])
         for sub in subs:
             sub.handleMessage(msg, self)
-
+            log.debug(f"message handled by: {sub}")
+            
     def connect(self) -> None:
         try:
             self.client.connect(self.broker, self.port, self.keepalive)
@@ -36,12 +38,16 @@ class MQTTClient(IPublisher):
         self.client.loop_stop()
         self.client.disconnect()
     def subscribe(self, topic:str) -> None:
-        print(f"\nSubscribed to topic '{topic}'")
+        log.debug(f"\nSubscribed to topic '{topic}'")
         self.client.subscribe(topic)
     def publish(self, topic:str, message:str) -> None:
+        if topic in self.subscribers:
+            for sub in self.subscribers[topic]:
+                sub.handleMessage(message, self)
+        log.debug(f"PUBLISHED\n---TOPIC---\n{topic}\n---MESSAGE---\n{message}\n")
         self.client.publish(topic, message)
-        print(f"PUBLISHED\n---TOPIC---\n{topic}\n---MESSAGE---\n{message}\n")
     def attach(self, subscriber:ISubscriber, topic:str)->None:
         if topic not in self.subscribers:
             self.subscribers[topic] =[]
         self.subscribers[topic].append(subscriber)
+        log.debug(f"subscriber {subscriber} attached to topic {topic}")

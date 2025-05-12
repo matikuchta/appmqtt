@@ -4,17 +4,16 @@ from paho.mqtt.client import Client
 import time
 from typing import TYPE_CHECKING
 
-
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
+import logging as log
 # if TYPE_CHECKING:
 
 class PersonFasada(ISubscriber):
     persons = []
     def __init__(self) -> None:
-        self.persons=[]
-        #with open("persons.json", "r") as file:
-           # self.persons = json.load(file)
+        with open("C:/Users/kuchta_m/appmqtt/persons.json", "r") as file:
+            self.persons = json.load(file)
     def ValidateData(self, data:dict) -> bool:
         try:
             for x in data:
@@ -41,7 +40,7 @@ class PersonFasada(ISubscriber):
                 for key, value in data["to_update"].items():
                     print(f"{key} {value}\n")
                     person[key]=value
-                person.data_modyfikacji = datetime.now().isoformat()
+                person["data_modyfikacji"] = datetime.now().isoformat()
 
     def RemovePerson(self, data:dict) -> None:
         data=json.loads(data)
@@ -75,25 +74,25 @@ class PersonFasada(ISubscriber):
         try:
             match msg.topic:
                 case "app/person/add/request":
-                    self.pf.AddPerson(mes)
+                    self.AddPerson(mes)
 
                 case "app/person/update/request":
-                    self.pf.ModifyPerson(mes)
+                    self.ModifyPerson(mes)
 
                 case "app/person/del/request":
-                    self.pf.RemovePerson(mes)
+                    self.RemovePerson(mes)
 
                 case "app/person/get/request":
-                    print("response", self.pf.GetPerson(mes))
-                    res["data"].update({"contain": {self.pf.GetPerson(mes)}})
+                    #print("response", self.GetPerson(mes))
+                    res["data"]["contain"]=self.GetPerson(mes)
 
                 case "app/persons/get/request":
-                    print("response", self.pf.GetPersons())
-                    res["data"].update({"contain": {self.pf.GetPersons()}})
+                    #print("response", self.GetPersons())
+                    res["data"]["contain"]=self.GetPersons()
 
                 case "app/persons/count/request":
-                    print("response", self.pf.GetPersonsCount())
-                    res["data"].update({"contain": {"count": self.pf.GetPersonsCount()}})
+                    #print("response", self.GetPersonsCount())
+                    res["data"]["contain"].update({"count": self.GetPersonsCount()})
 
                 case _:
                     pass
@@ -102,8 +101,10 @@ class PersonFasada(ISubscriber):
             res["data"]["status"] = "error"
             print(f"Error handling topic {msg.topic}: {e}")
         finally:
-            self.publish(str(top), str(res))
-            #with open("persons.json", "w") as file:
-                #file.write(json.dumps(self.pf.persons))
+            log.debug(f"published {res} to topic {top}")
+            publisher.publish(str(top), json.dumps(res))
+
+            with open("C:/Users/kuchta_m/appmqtt/persons.json", "w") as file:
+                json.dump(self.persons, file, indent=2)
 
 
