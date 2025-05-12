@@ -25,9 +25,10 @@ class MQTTClient(IPublisher):
     def on_message(self, client, userdata, msg)-> None:
         subs=self.subscribers.get(msg.topic, [])
         for sub in subs:
+            log.debug(f"message handled by: {sub.name}")
             sub.handleMessage(msg, self)
-            log.debug(f"message handled by: {sub}")
-            
+           
+
     def connect(self) -> None:
         try:
             self.client.connect(self.broker, self.port, self.keepalive)
@@ -44,10 +45,10 @@ class MQTTClient(IPublisher):
         if topic in self.subscribers:
             for sub in self.subscribers[topic]:
                 sub.handleMessage(message, self)
-        log.debug(f"PUBLISHED\n---TOPIC---\n{topic}\n---MESSAGE---\n{message}\n")
+        #log.debug(f"PUBLISHED\n---TOPIC---\n{topic}\n---MESSAGE---\n{message}\n")
         self.client.publish(topic, message)
     def attach(self, subscriber:ISubscriber, topic:str)->None:
         if topic not in self.subscribers:
             self.subscribers[topic] =[]
         self.subscribers[topic].append(subscriber)
-        log.debug(f"subscriber {subscriber} attached to topic {topic}")
+        log.debug(f"subscriber {subscriber.name} attached to topic {topic}")

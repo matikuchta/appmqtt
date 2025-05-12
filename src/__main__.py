@@ -20,7 +20,7 @@ if __name__ == '__main__':
     client = MQTTClient(client_id="myclient", broker="127.0.0.1")
     #jan = CreatePerson("jan", "kowalski", "12345678901", "kierownik", datetime.now().isoformat(), datetime.now().isoformat())
     #adam = CreatePerson("adam", "kowalski", "12345678901", "kierownik", datetime.now().isoformat(), datetime.now().isoformat())
-    sub = PersonFasada()
+    sub = PersonFasada("sub1")
     client.attach(sub, "app/person/add/request")
     client.attach(sub, "app/person/del/request")
     client.attach(sub, "app/person/update/request")

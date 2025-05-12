@@ -6,11 +6,15 @@
 - get person
 - get all persons
 - get the number of persons on the list
+- saving all data to a .json file
 
 ## Used Technology
 - Python 3.10
 - paho-mqtt
 
+# Data storage
+all persons are stored in a .json file, an example is provided. 
+the file should be in the src folder
 # Person Structure
 
 this is an example of a JSON object containing all of the stored information about a single person
@@ -64,10 +68,9 @@ app/person/add/request
   "stanowisko": "job",
   "data_zatrudnienia": "date_of_employment",
   "data_urodzenia": "date_of_birth",
-  "data_utworzenia": "date_of_creation",
-  "data_modyfikacji": "date_of_modification"
 }
 ```
+pesel must be a 11 digit number, name and surname can contain only letters
 ### Response
 #### Topic
 ```
@@ -136,7 +139,7 @@ app/person/del/request
 
 ``` JSON
 {
-"pesel": "12345678901",
+"pesel": "12345678901"
 
 }
 ```
