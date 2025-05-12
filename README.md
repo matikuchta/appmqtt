@@ -12,8 +12,24 @@
 - Python 3.10
 - paho-mqtt
 
-# Data storage
-all persons can be stored in a .json file, an example file is provided. 
+# Config
+``` JSON
+{
+    "broker":"127.0.0.1",
+    "client_id":"myclient",
+    "save_path":"src/persons.json",
+    "port": 1883,
+    "keepalive":60,
+    "topics": [
+    "app/person/add/request",
+    "app/person/del/request",
+    "app/person/update/request",
+    "app/person/get/request",
+    "app/persons/get/request",
+    "app/persons/count/request"
+]}
+```
+You can specify the path to your configuration file as an argument like this: ```python3 ./src/__main__.py ./src/config.json```, otherwise, the default config is used
 # Person Structure
 
 this is an example of a JSON object containing all of the stored information about a single person
@@ -35,16 +51,16 @@ the topic follows this pattern: ```app/[...]/[...]/request```
 and the needed data in the message content as JSON
 the app will respond with a topic ```app/[...]/[...]/response``` and message containing the requested data, if any
 #### Message
-```
+```JSON
 {
-'data':
+"data":
   {
-  'status': 'success',
-  'contain': {}
+  "status": "success",
+  "contain": {}
   },
-'info':
+"info":
   {
-'ts': 1746695904
+"ts": 1746695904
   }
 }
 ```
@@ -76,16 +92,16 @@ pesel must be a 11 digit number, name and surname can contain only letters
 app/person/add/response
 ```
 #### Message
-```
+```JSON
 {
-'data':
+"data":
   {
-  'status': 'success',
-  'contain': {}
+  "status": "success",
+  "contain": {}
   },
-'info':
+"info":
   {
-'ts': 1746695904
+"ts": 1746695904
   }
 }
 ```
@@ -114,16 +130,16 @@ to_update contains the fields that are to be updated as keys and new values as v
 app/person/update/response
 ```
 #### Message
-```
+```JSON
 {
-'data':
+"data":
   {
-  'status': 'success',
-  'contain': {}
+  "status": "success",
+  "contain": {}
   },
-'info':
+"info":
   {
-'ts': 1746695904
+"ts": 1746695904
   }
 }
 ```
@@ -149,16 +165,16 @@ the pesel number is used to identify the person that is about to be deleted
 app/person/del/response
 ```
 #### Message
-```
+```JSON
 {
-'data':
+"data":
   {
-  'status': 'success',
-  'contain': {}
+  "status": "success",
+  "contain": {}
   },
-'info':
+"info":
   {
-'ts': 1746695904
+"ts": 1746695904
   }
 }
 ```
@@ -184,17 +200,17 @@ the pesel number is used to identify the person
 app/person/get/response
 ```
 #### Message
-```
+```JSON
 {
-'data':
+"data":
   {
-    'status': 'success',
-    'contain':
-{'{"imie": "jan", "nazwisko": "kowalski", "pesel": "12345678901", "stanowisko": "kierownik", "data_zatrudnienia": "2025-05-08T09:50:01.444494", "data_urodzenia": "2025-05-08T09:50:01.444494", "data_utworzenia": "2025-05-08T09:50:01.444494", "data_modyfikacji": "2025-05-08T09:50:01.444494"}'}
+    "status": "success",
+    "contain":
+{"imie": "jan", "nazwisko": "kowalski", "pesel": "12345678901", "stanowisko": "kierownik", "data_zatrudnienia": "2025-05-08T09:50:01.444494", "data_urodzenia": "2025-05-08T09:50:01.444494", "data_utworzenia": "2025-05-08T09:50:01.444494", "data_modyfikacji": "2025-05-08T09:50:01.444494"}
   },
-'info':
+"info":
   {
-  'ts': 1746690667
+  "ts": 1746690667
   }
 }
 ```
@@ -212,14 +228,14 @@ the message is empty
 app/persons/get/response
 ```
 #### Message
-```
+```JSON
 {
-data':
-  {'status': 'success',
-  'contain': {'[{"imie": "jan", "nazwisko": "kowalski", "pesel": "12345678901", "stanowisko": "kierownik", "data_zatrudnienia": "2025-05-08T10:09:44.421447", "data_urodzenia": "2025-05-08T10:09:44.421447", "data_utworzenia": "2025-05-08T10:09:44.421447", "data_modyfikacji": "2025-05-08T10:09:44.421447"}]'}},
-'info':
+"data":
+  {"status": "success",
+  "contain": [{"imie": "jan", "nazwisko": "kowalski", "pesel": "12345678901", "stanowisko": "kierownik", "data_zatrudnienia": "2025-05-08T10:09:44.421447", "data_urodzenia": "2025-05-08T10:09:44.421447", "data_utworzenia": "2025-05-08T10:09:44.421447", "data_modyfikacji": "2025-05-08T10:09:44.421447"}]},
+"info":
   {
-  'ts': 1746695934
+  "ts": 1746695934
   }
 }
 ```
@@ -237,8 +253,8 @@ the message is empty
 app/persons/count/response
 ```
 #### Message
-```
-{'data': {'status': 'success', 'contain': {'count': '0'}}, 'info': {'ts': 1746690946}}
+```JSON
+{"data": {"status": "success", "contain": {"count": "0"}}, "info": {"ts": 1746690946}}
 ```
 
 

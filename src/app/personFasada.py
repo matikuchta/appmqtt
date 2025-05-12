@@ -1,7 +1,6 @@
 from datetime import datetime
 import json
 from paho.mqtt.client import Client
-import time
 from typing import TYPE_CHECKING, List, TypedDict
 
 from app.publisher import IPublisher
@@ -12,10 +11,10 @@ import re
 # if TYPE_CHECKING:
 
 class PersonFasada(ISubscriber):
-    def __init__(self, path:str="", persons:List[Person]=[], name:str="subscriber") -> None:
-        self.name=name
-        self.path = path
-        self.persons=persons
+    def __init__(self, config, persons:List[Person]=[], name:str="subscriber") -> None:
+        self.name = name
+        self.config = config
+        self.persons = persons
     def ValidateData(self, data:dict) -> bool:
         try:
             if re.search("^[A-Z]{,1}[a-z]{2,}$", data["imie"]) and re.search("^[A-Z]{,1}[a-z]{1,}$", data["nazwisko"]) and re.search("^[0-9]{11}$", data["pesel"]):
@@ -121,8 +120,8 @@ class PersonFasada(ISubscriber):
             log.debug(f"published {res} to topic {top}")
             publisher.publish(str(top), json.dumps(res))
             try:
-                if self.path != "":
-                    with open(self.path, "w") as file:
+                if self.config["save_path"] != "":
+                    with open(self.config["save_path"], "w") as file:
                         json.dump(self.persons, file, indent=2)
             except Exception as e:
                 print(f"data not saved to file")

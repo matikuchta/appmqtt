@@ -1,6 +1,5 @@
 from paho.mqtt.client import Client
 import sys
-import time
 import signal
 import logging as log
 from typing import Any
@@ -18,23 +17,27 @@ def handleExit(signal: int, frame: Any)->None:
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, handleExit)
-    
-    client = MQTTClient(client_id="myclient", broker="127.0.0.1")
+    if len(sys.argv)<2:
+        with open("src/config.json", "r") as f:
+            config = json.load(f)
+    else:
+        with open(sys.argv[1], "r") as f:
+            config = json.load(f)
+            print(f"config opened from file: {sys.argv[1]}")
+
+    client = MQTTClient(config)
+
     try:
-        with open("src/persons.json", "r") as file:
+        with open(config["save_path"], "r") as file:
             persons:list[Person] = json.load(file)
     except Exception as e:
         persons=[]
         print(f"file not loaded: {e}")
-    sub = PersonFasada("src/persons.json", persons, "sub1")
-    client.attach(sub, "app/person/add/request")
-    client.attach(sub, "app/person/del/request")
-    client.attach(sub, "app/person/update/request")
-    client.attach(sub, "app/person/get/request")
-    client.attach(sub, "app/persons/get/request")
-    client.attach(sub, "app/persons/count/request")
+
+    sub = PersonFasada(config, persons, "sub1")
+    for topic in config.get("topics"):
+        client.attach(sub, topic)
 
     client.connect()
     client.subscribe("app/+/+/request")
-    #client.publish("app/person/add/request", json.dumps(jan))
     client.client.loop_forever()

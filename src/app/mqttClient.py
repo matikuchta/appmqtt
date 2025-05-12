@@ -1,8 +1,8 @@
 from datetime import datetime
 import json
 from paho.mqtt.client import Client
-import time
 import logging as log
+
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
 from app.personFasada import PersonFasada
@@ -10,11 +10,11 @@ from app.personFasada import PersonFasada
 class MQTTClient(IPublisher):
     pf=PersonFasada("src/persons.json")
     subscribers:dict[str, list[ISubscriber]]={}
-    def __init__(self, client_id:str, broker:str, port:int=1883, keepalive:int=60) -> None:
-        self.client = Client(client_id=client_id)
-        self.broker = broker
-        self.port = port
-        self.keepalive = keepalive
+    def __init__(self,config) -> None:
+        self.client = Client(client_id=config["client_id"])
+        self.broker = config["broker"]
+        self.port = config["port"]
+        self.keepalive = config["keepalive"]
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.on_disconnect = self.on_disconnect
@@ -32,14 +32,14 @@ class MQTTClient(IPublisher):
     def connect(self) -> None:
         try:
             self.client.connect(self.broker, self.port, self.keepalive)
-            print("Connected to broker")
+            print(f"Connected to broker {self.broker} on port {self.port}")
         except Exception as e:
             print(f"Connect error: {e}")
     def disconnect(self) -> None:
         self.client.loop_stop()
         self.client.disconnect()
     def subscribe(self, topic:str) -> None:
-        log.debug(f"\nSubscribed to topic '{topic}'")
+        log.debug(f"\n Broker subscribed to topic '{topic}'")
         self.client.subscribe(topic)
     def publish(self, topic:str, message:str) -> None:
         if topic in self.subscribers:
