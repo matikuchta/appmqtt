@@ -13,8 +13,7 @@
 - paho-mqtt
 
 # Data storage
-all persons are stored in a .json file, an example is provided. 
-the file should be in the src folder
+all persons can be stored in a .json file, an example file is provided. 
 # Person Structure
 
 this is an example of a JSON object containing all of the stored information about a single person
