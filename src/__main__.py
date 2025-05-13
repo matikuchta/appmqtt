@@ -1,13 +1,15 @@
 from paho.mqtt.client import Client
 import sys
 import signal
+import json
 import logging as log
 from typing import Any
+from flask import Flask, request
+
 from app.mqttClient import MQTTClient
 from app.personFasada import PersonFasada
 from app.types.person import Person
 from app.types.config import Config
-import json
 
 log.basicConfig(level=log.DEBUG)
 
@@ -39,7 +41,18 @@ if __name__ == '__main__':
     sub = PersonFasada(config, persons, "sub1")
     for topic in config.get("topics"):
         client.attach(sub, topic)
-
+    '''FLASK'''
+    app = Flask(__name__)
+    @app.route('/')
+    def root():
+        return "root"
+    @app.route('/person')
+    def show_subpath():
+        pesel = request.args.get('pesel')
+        name = request.args.get('name')
+        return f'The person with pesel {pesel}, name {name}'
+    app.run(host='127.0.0.1', port=5000, debug=True, use_reloader=False)
+    '''FLASK'''
     client.connect()
     client.subscribe("app/+/+/request")
     client.client.loop_forever()
