@@ -1,7 +1,7 @@
 {
     "broker":"127.0.0.1",
     "client_id":"myclient",
-    "save_path":"src/persons.json",
+    "save_path":"persons.json",
     "port": 1883,
     "keepalive":60,
     "topics": [

@@ -6,15 +6,17 @@ import logging as log
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
 from app.personFasada import PersonFasada
+from app.types.config import Config
 
 class MQTTClient(IPublisher):
     pf=PersonFasada("src/persons.json")
     subscribers:dict[str, list[ISubscriber]]={}
-    def __init__(self,config) -> None:
-        self.client = Client(client_id=config["client_id"])
-        self.broker = config["broker"]
-        self.port = config["port"]
-        self.keepalive = config["keepalive"]
+    def __init__(self,config:Config) -> None:
+        self.config:Config = config
+        self.client:Client = Client(client_id=config["client_id"])
+        self.broker:str = config["broker"]
+        self.port:int = config["port"]
+        self.keepalive:int = config["keepalive"]
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.on_disconnect = self.on_disconnect

@@ -6,15 +6,18 @@ from typing import TYPE_CHECKING, List, TypedDict
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
 from app.types.person import Person
+from app.types.getdelpersondata import GetDelPersonData
+from app.types.updatepersondata import UpdatePersonData
 import logging as log
 import re
+from app.types.config import Config
 # if TYPE_CHECKING:
 
 class PersonFasada(ISubscriber):
-    def __init__(self, config, persons:List[Person]=[], name:str="subscriber") -> None:
-        self.name = name
-        self.config = config
-        self.persons = persons
+    def __init__(self, config:Config, persons:List[Person]=[], name:str="subscriber") -> None:
+        self.name:str = name
+        self.config:Config = config
+        self.persons:List[Person] = persons
     def ValidateData(self, data:dict) -> bool:
         try:
             if re.search("^[A-Z]{,1}[a-z]{2,}$", data["imie"]) and re.search("^[A-Z]{,1}[a-z]{1,}$", data["nazwisko"]) and re.search("^[0-9]{11}$", data["pesel"]):
@@ -24,8 +27,8 @@ class PersonFasada(ISubscriber):
             else: return False
         except:
             return False
-    def AddPerson(self, data:dict) -> bool:
-        data=json.loads(data)
+    def AddPerson(self, data:Person) -> bool:
+        data:Person=json.loads(data)
         data["data_utworzenia"] = datetime.now().isoformat()
         data["data_modyfikacji"] = datetime.now().isoformat()
         ok = True
@@ -38,8 +41,8 @@ class PersonFasada(ISubscriber):
         else:
             return False
 
-    def ModifyPerson(self, data:dict) ->bool:
-        data=json.loads(data)
+    def ModifyPerson(self, data:UpdatePersonData) ->bool:
+        data:UpdatePersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 for key, value in data["to_update"].items():
@@ -51,15 +54,15 @@ class PersonFasada(ISubscriber):
                         person["data_modyfikacji"] = datetime.now().isoformat()
                 return True
 
-    def RemovePerson(self, data:dict) -> bool:
-        data=json.loads(data)
+    def RemovePerson(self, data:GetDelPersonData) -> bool:
+        data:GetDelPersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 self.persons.remove(person)
                 return True
         return False
-    def GetPerson(self, data:dict) -> json:
-        data=json.loads(data)
+    def GetPerson(self, data:GetDelPersonData) -> json:
+        data:GetDelPersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 return json.dumps(person)

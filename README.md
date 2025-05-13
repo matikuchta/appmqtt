@@ -189,7 +189,7 @@ app/person/get/request
 
 ``` JSON
 {
-"pesel": "12345678901",
+"pesel": "12345678901"
 
 }
 ```
