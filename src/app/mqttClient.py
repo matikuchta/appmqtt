@@ -9,7 +9,6 @@ from app.personFasada import PersonFasada
 from app.types.config import Config
 
 class MQTTClient(IPublisher):
-    pf=PersonFasada("src/persons.json")
     subscribers:dict[str, list[ISubscriber]]={}
     def __init__(self,config:Config) -> None:
         self.config:Config = config

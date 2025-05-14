@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 from paho.mqtt.client import Client
-from typing import TYPE_CHECKING, List, TypedDict
+from typing import TYPE_CHECKING, List, TypedDict, Optional, Dict
 
 from app.publisher import IPublisher
 from app.subscriber import ISubscriber
@@ -18,6 +18,7 @@ class PersonFasada(ISubscriber):
         self.name:str = name
         self.config:Config = config
         self.persons:List[Person] = persons
+        
     def ValidateData(self, data:Person) -> bool:
         try:
             if re.search("^[A-Z]{,1}[a-z]{2,}$", data["imie"]) and re.search("^[A-Z]{,1}[a-z]{1,}$", data["nazwisko"]) and re.search("^[0-9]{11}$", data["pesel"]):
@@ -61,11 +62,14 @@ class PersonFasada(ISubscriber):
                 self.persons.remove(person)
                 return True
         return False
-    def GetPerson(self, data:str) -> Person:
-        data:GetDelPersonData=json.loads(data)
+
+    def GetPerson(self, data: Dict[str, str]) -> Optional[Person]:
+        data:GetDelPersonData= data
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 return person
+        return None
+
     def GetPersons(self) -> list[Person]:
         return self.persons
     def GetPersonsCount(self) -> str:

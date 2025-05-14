@@ -34,7 +34,7 @@ if __name__ == '__main__':
         path = config["save_path"]
         with open(path, "r") as file:
             persons:list[Person] = json.load(file)
-            print(f"file {path} loaded")
+            print(f"file {path} loaded, persons: {persons}")
     except Exception as e:
         persons=[]
         print(f"file {path} not loaded: {e}")
@@ -52,13 +52,14 @@ if __name__ == '__main__':
         return "root"
     @app.get('/person')
     def get_person():
-        data={"pesel": request.args.get('pesel')}
-        res = client.pf.GetPerson(json.dumps(data))
+        pesel = request.args.get('pesel')
+        data = {'pesel': pesel}
+        res = sub.GetPerson(data)
         log.debug(res)
         return jsonify(res)
     @app.get('/persons')
     def get_persons():
-        res = client.pf.GetPersons()
+        res = sub.GetPersons()
         log.debug(res)
         return jsonify(res)
     app.run(host='127.0.0.1', port=5000, debug=True, use_reloader=False)
