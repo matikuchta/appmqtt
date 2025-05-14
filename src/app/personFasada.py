@@ -74,6 +74,16 @@ class PersonFasada(ISubscriber):
         return self.persons
     def GetPersonsCount(self) -> str:
         return len(self.persons)
+    def SaveData(self) -> bool:
+        try:
+            if self.config["save_path"] != "":
+                with open(self.config["save_path"], "w") as file:
+                    json.dump(self.persons, file, indent=2)
+                return True
+            return False
+        except Exception as e:
+            print(f"data not saved to file")
+            return False
     def handleMessage(self, msg:object, publisher:IPublisher) -> None:
         print(f"recieved message {msg.payload.decode()} on topic: {msg.topic}")
         mes = msg.payload.decode()
@@ -126,11 +136,6 @@ class PersonFasada(ISubscriber):
         finally:
             log.debug(f"published {res} to topic {top}")
             publisher.publish(str(top), json.dumps(res))
-            try:
-                if self.config["save_path"] != "":
-                    with open(self.config["save_path"], "w") as file:
-                        json.dump(self.persons, file, indent=2)
-            except Exception as e:
-                print(f"data not saved to file")
+            self.SaveData()
 
 

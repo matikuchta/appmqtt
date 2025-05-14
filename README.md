@@ -7,10 +7,14 @@
 - get all persons
 - get the number of persons on the list
 - saving all data to a .json file
+- api support
 
 ## Used Technology
 - Python 3.10
-- paho-mqtt
+- libraries:
+  - paho-mqtt
+  - requests
+  - flask
 
 # Config
 ``` JSON
@@ -45,7 +49,7 @@ this is an example of a JSON object containing all of the stored information abo
   "data_modyfikacji": "2025-05-08T10:09:44.421447"
 }
 ```
-# Command Structure
+# MQTT Command Structure
 the command is given in the topic of the message
 the topic follows this pattern: ```app/[...]/[...]/request```
 and the needed data in the message content as JSON
@@ -67,7 +71,7 @@ the app will respond with a topic ```app/[...]/[...]/response``` and message con
 the status will be either success or error
 contain will store the requested data, if any
 ts will store the timestamp of the response
-# Reqests and responses
+# MQTT Reqests and responses
 ## Adding a person
 ### Request
 #### Topic
@@ -256,6 +260,84 @@ app/persons/count/response
 ```JSON
 {"data": {"status": "success", "contain": {"count": "0"}}, "info": {"ts": 1746690946}}
 ```
+
+# API Requests
+## Get all persons
+### Request - GET
+```
+http://127.0.0.1:5000/persons
+```
+### Response
+```JSON
+[
+    {
+        "data_modyfikacji": "2025-05-12T10:32:33.854899",
+        "data_urodzenia": "2025-05-08T10:09:44.421447",
+        "data_utworzenia": "2025-05-08T10:09:44.421447",
+        "data_zatrudnienia": "2025-05-08T10:09:44.421447",
+        "imie": "adam",
+        "nazwisko": "nowak",
+        "pesel": "12345678901",
+        "stanowisko": "kierownik"
+    },
+    {
+        "data_modyfikacji": "2025-05-08T10:09:44.421447",
+        "data_urodzenia": "2025-05-08T10:09:44.421447",
+        "data_utworzenia": "2025-05-08T10:09:44.421447",
+        "data_zatrudnienia": "2025-05-08T10:09:44.421447",
+        "imie": "jan",
+        "nazwisko": "kowalski",
+        "pesel": "12345678900",
+        "stanowisko": "kierownik"
+    }
+]
+```
+## Get a single person
+### Request - GET
+```
+http://127.0.0.1:5000/person?pesel=12345678905
+```
+### Resposnse
+```JSON
+{
+    "data_modyfikacji": "2025-05-14T11:55:46.738037",
+    "data_urodzenia": "2000-02-02",
+    "data_utworzenia": "2025-05-14T11:55:46.738037",
+    "data_zatrudnienia": "2024-01-01",
+    "imie": "Adam",
+    "nazwisko": "Nowak",
+    "pesel": "12345678905",
+    "stanowisko": "mechanik"
+}
+```
+## Add a person
+### Request - POST
+```
+http://127.0.0.1:5000/person?pesel=12345678905&imie=Adam&nazwisko=Nowak&stanowisko=mechanik&data_urodzenia=2000-02-02&data_zatrudnienia=2024-01-01
+```
+### Resposnse
+```JSON
+{}
+```
+## Update a person
+### Request - patch
+```
+http://127.0.0.1:5000/person?pesel=12345678905&imie=Jan&nazwisko=Nowak&stanowisko=elektryk
+```
+### Resposnse
+```JSON
+{}
+```
+## Delete a person
+### Request - DELETE
+```
+http://127.0.0.1:5000/person?pesel=12345678905
+```
+### Resposnse
+```JSON
+{}
+```
+
 
 
 
