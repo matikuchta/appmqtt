@@ -61,12 +61,12 @@ class PersonFasada(ISubscriber):
                 self.persons.remove(person)
                 return True
         return False
-    def GetPerson(self, data:str) -> str:
+    def GetPerson(self, data:str) -> Person:
         data:GetDelPersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 return person
-    def GetPersons(self) -> str:
+    def GetPersons(self) -> list[Person]:
         return self.persons
     def GetPersonsCount(self) -> str:
         return len(self.persons)

@@ -42,7 +42,9 @@ if __name__ == '__main__':
     sub = PersonFasada(config, persons, "sub1")
     for topic in config.get("topics"):
         client.attach(sub, topic)
-
+    client.connect()
+    client.subscribe("app/+/+/request")
+    client.client.loop_start()
     '''FLASK'''
     app = Flask(__name__)
     @app.route('/')
@@ -61,6 +63,3 @@ if __name__ == '__main__':
         return jsonify(res)
     app.run(host='127.0.0.1', port=5000, debug=True, use_reloader=False)
     '''FLASK'''
-    client.connect()
-    client.subscribe("app/+/+/request")
-    client.client.loop_forever()
