@@ -4,7 +4,7 @@ import signal
 import json
 import logging as log
 from typing import Any
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from app.mqttClient import MQTTClient
 from app.personFasada import PersonFasada
@@ -34,23 +34,31 @@ if __name__ == '__main__':
         path = config["save_path"]
         with open(path, "r") as file:
             persons:list[Person] = json.load(file)
+            print(f"file {path} loaded")
     except Exception as e:
         persons=[]
-        print(f"file not loaded: {e}")
+        print(f"file {path} not loaded: {e}")
 
     sub = PersonFasada(config, persons, "sub1")
     for topic in config.get("topics"):
         client.attach(sub, topic)
+
     '''FLASK'''
     app = Flask(__name__)
     @app.route('/')
     def root():
         return "root"
-    @app.route('/person')
-    def show_subpath():
-        pesel = request.args.get('pesel')
-        name = request.args.get('name')
-        return f'The person with pesel {pesel}, name {name}'
+    @app.get('/person')
+    def get_person():
+        data={"pesel": request.args.get('pesel')}
+        res = client.pf.GetPerson(json.dumps(data))
+        log.debug(res)
+        return jsonify(res)
+    @app.get('/persons')
+    def get_persons():
+        res = client.pf.GetPersons()
+        log.debug(res)
+        return jsonify(res)
     app.run(host='127.0.0.1', port=5000, debug=True, use_reloader=False)
     '''FLASK'''
     client.connect()

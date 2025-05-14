@@ -18,7 +18,7 @@ class PersonFasada(ISubscriber):
         self.name:str = name
         self.config:Config = config
         self.persons:List[Person] = persons
-    def ValidateData(self, data:dict) -> bool:
+    def ValidateData(self, data:Person) -> bool:
         try:
             if re.search("^[A-Z]{,1}[a-z]{2,}$", data["imie"]) and re.search("^[A-Z]{,1}[a-z]{1,}$", data["nazwisko"]) and re.search("^[0-9]{11}$", data["pesel"]):
                 #required_keys = {"data_urodzenia", "data_zatrudnienia", "stanowisko"}
@@ -27,7 +27,7 @@ class PersonFasada(ISubscriber):
             else: return False
         except:
             return False
-    def AddPerson(self, data:Person) -> bool:
+    def AddPerson(self, data:str) -> bool:
         data:Person=json.loads(data)
         data["data_utworzenia"] = datetime.now().isoformat()
         data["data_modyfikacji"] = datetime.now().isoformat()
@@ -41,7 +41,7 @@ class PersonFasada(ISubscriber):
         else:
             return False
 
-    def ModifyPerson(self, data:UpdatePersonData) ->bool:
+    def ModifyPerson(self, data:str) ->bool:
         data:UpdatePersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
@@ -54,22 +54,22 @@ class PersonFasada(ISubscriber):
                         person["data_modyfikacji"] = datetime.now().isoformat()
                 return True
 
-    def RemovePerson(self, data:GetDelPersonData) -> bool:
+    def RemovePerson(self, data:str) -> bool:
         data:GetDelPersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
                 self.persons.remove(person)
                 return True
         return False
-    def GetPerson(self, data:GetDelPersonData) -> json:
+    def GetPerson(self, data:str) -> str:
         data:GetDelPersonData=json.loads(data)
         for person in self.persons:
             if person["pesel"] == data["pesel"]:
-                return json.dumps(person)
-    def GetPersons(self) -> json:
-        return json.dumps(self.persons)
-    def GetPersonsCount(self) -> json:
-        return json.dumps(len(self.persons))
+                return person
+    def GetPersons(self) -> str:
+        return self.persons
+    def GetPersonsCount(self) -> str:
+        return len(self.persons)
     def handleMessage(self, msg:object, publisher:IPublisher) -> None:
         print(f"recieved message {msg.payload.decode()} on topic: {msg.topic}")
         mes = msg.payload.decode()
