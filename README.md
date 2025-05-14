@@ -1,5 +1,25 @@
-# MQTT personel menagement system operating on JSON objects
-## Features
+# MQTT personel menagement system operating on JSON objects <!-- omit in toc -->
+# Table of contents <!-- omit in toc -->
+- [Features](#features)
+- [Used Technology](#used-technology)
+- [Config](#config)
+- [Person Structure](#person-structure)
+- [MQTT Command Structure](#mqtt-command-structure)
+- [MQTT Reqests and responses](#mqtt-reqests-and-responses)
+  - [Adding a person](#adding-a-person)
+  - [Modifying a person](#modifying-a-person)
+  - [Deleting a person](#deleting-a-person)
+  - [Geting the data of a person](#geting-the-data-of-a-person)
+  - [Geting the data of all persons](#geting-the-data-of-all-persons)
+  - [Geting the count of all persons](#geting-the-count-of-all-persons)
+- [API requests and responses](#api-requests-and-responses)
+  - [Get all persons](#get-all-persons)
+  - [Get a single person](#get-a-single-person)
+  - [Add a person](#add-a-person)
+  - [Update a person](#update-a-person)
+  - [Delete a person](#delete-a-person)
+
+# Features
 - add person
 - modify person
 - delete person
@@ -7,9 +27,10 @@
 - get all persons
 - get the number of persons on the list
 - saving all data to a .json file
+- loading a custom config.json file
 - api support
 
-## Used Technology
+# Used Technology
 - Python 3.10
 - libraries:
   - paho-mqtt
@@ -54,7 +75,7 @@ the command is given in the topic of the message
 the topic follows this pattern: ```app/[...]/[...]/request```
 and the needed data in the message content as JSON
 the app will respond with a topic ```app/[...]/[...]/response``` and message containing the requested data, if any
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -73,12 +94,12 @@ contain will store the requested data, if any
 ts will store the timestamp of the response
 # MQTT Reqests and responses
 ## Adding a person
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/person/add/request
 ```
-#### Message
+Message
 ``` JSON
 {
   "imie": "name",
@@ -90,12 +111,12 @@ app/person/add/request
 }
 ```
 pesel must be a 11 digit number, name and surname can contain only letters
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/person/add/response
 ```
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -111,12 +132,12 @@ app/person/add/response
 ```
 this request does not return any data in contain
 ## Modifying a person
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/person/update/request
 ```
-#### Message
+Message
 
 ``` JSON
 {
@@ -128,12 +149,12 @@ app/person/update/request
 ```
 the pesel number is used to identify the person
 to_update contains the fields that are to be updated as keys and new values as values
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/person/update/response
 ```
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -149,12 +170,12 @@ app/person/update/response
 ```
 this request does not return any data in contain
 ## Deleting a person
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/person/del/request
 ```
-#### Message
+Message
 
 ``` JSON
 {
@@ -163,12 +184,12 @@ app/person/del/request
 }
 ```
 the pesel number is used to identify the person that is about to be deleted
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/person/del/response
 ```
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -184,12 +205,12 @@ app/person/del/response
 ```
 this request does not return any data in contain
 ## Geting the data of a person
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/person/get/request
 ```
-#### Message
+Message
 
 ``` JSON
 {
@@ -198,12 +219,12 @@ app/person/get/request
 }
 ```
 the pesel number is used to identify the person
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/person/get/response
 ```
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -219,19 +240,19 @@ app/person/get/response
 }
 ```
 ## Geting the data of all persons
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/persons/get/request
 ```
-#### Message
+Message
 the message is empty
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/persons/get/response
 ```
-#### Message
+Message
 ```JSON
 {
 "data":
@@ -244,30 +265,30 @@ app/persons/get/response
 }
 ```
 ## Geting the count of all persons
-### Request
-#### Topic
+### Request <!-- omit in toc -->
+Topic
 ```
 app/persons/count/request
 ```
-#### Message
+Message
 the message is empty
-### Response
-#### Topic
+### Response <!-- omit in toc -->
+Topic
 ```
 app/persons/count/response
 ```
-#### Message
+Message
 ```JSON
 {"data": {"status": "success", "contain": {"count": "0"}}, "info": {"ts": 1746690946}}
 ```
 
-# API Requests
+# API requests and responses
 ## Get all persons
-### Request - GET
+### Request - GET <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/persons
 ```
-### Response
+### Response <!-- omit in toc -->
 ```JSON
 [
     {
@@ -293,11 +314,11 @@ http://127.0.0.1:5000/persons
 ]
 ```
 ## Get a single person
-### Request - GET
+### Request - GET <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/person?pesel=12345678905
 ```
-### Resposnse
+### Resposnse <!-- omit in toc -->
 ```JSON
 {
     "data_modyfikacji": "2025-05-14T11:55:46.738037",
@@ -311,29 +332,29 @@ http://127.0.0.1:5000/person?pesel=12345678905
 }
 ```
 ## Add a person
-### Request - POST
+### Request- POST <!-- omit in toc --> 
 ```
 http://127.0.0.1:5000/person?pesel=12345678905&imie=Adam&nazwisko=Nowak&stanowisko=mechanik&data_urodzenia=2000-02-02&data_zatrudnienia=2024-01-01
 ```
-### Resposnse
+### Resposnse <!-- omit in toc -->
 ```JSON
 {}
 ```
 ## Update a person
-### Request - patch
+### Request - PATCH <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/person?pesel=12345678905&imie=Jan&nazwisko=Nowak&stanowisko=elektryk
 ```
-### Resposnse
+### Resposnse <!-- omit in toc -->
 ```JSON
 {}
 ```
 ## Delete a person
-### Request - DELETE
+### Request  - DELETE <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/person?pesel=12345678905
 ```
-### Resposnse
+### Resposnse <!-- omit in toc -->
 ```JSON
 {}
 ```
