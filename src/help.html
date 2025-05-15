@@ -1,0 +1,28 @@
+<h1>API requests and responses</h1>
+
+<h2>Get a list of all persons</h2>
+<h3>Request - GET</h3>
+<pre><code>http://127.0.0.1:5000/persons</code></pre>
+
+<h2>Get a person by pesel number</h2>
+<h3>Request - GET</h3>
+<pre><code>http://127.0.0.1:5000/person?pesel=12345678905</code></pre>
+
+<h2>Get the number of persons on the list</h2>
+<h3>Request - GET</h3>
+<pre><code>http://127.0.0.1:5000/persons/count</code></pre>
+
+<h2>Add a person</h2>
+<h3>Request - POST</h3>
+<pre><code>http://127.0.0.1:5000/person?pesel=12345678905&amp;imie=Adam&amp;nazwisko=Nowak&amp;stanowisko=mechanik&amp;data_urodzenia=2000-02-02&amp;data_zatrudnienia=2024-01-01</code></pre>
+<p>add all of the data</p>
+
+<h2>Update a person</h2>
+<h3>Request - PATCH</h3>
+<pre><code>http://127.0.0.1:5000/person?pesel=12345678905&amp;imie=Jan&amp;nazwisko=Nowak&amp;stanowisko=elektryk</code></pre>
+<p>you need to add the pesel number and only the data you want to update. the pesel won't be updated</p>
+
+<h2>Delete a person</h2>
+<h3>Request - DELETE</h3>
+<pre><code>http://127.0.0.1:5000/person?pesel=12345678905</code></pre>
+<p>only the pesel is needed</p>

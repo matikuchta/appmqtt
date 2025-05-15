@@ -13,8 +13,13 @@
   - [Geting the data of all persons](#geting-the-data-of-all-persons)
   - [Geting the count of all persons](#geting-the-count-of-all-persons)
 - [API requests and responses](#api-requests-and-responses)
-  - [Get all persons](#get-all-persons)
-  - [Get a single person](#get-a-single-person)
+  - [View all API requests](#view-all-api-requests)
+    - [Request - GET](#request---get)
+  - [Get a list of all persons](#get-a-list-of-all-persons)
+  - [Get the number of persons on the list](#get-the-number-of-persons-on-the-list)
+    - [Request - GET](#request---get-1)
+    - [Response](#response)
+  - [Get a person by pesel number](#get-a-person-by-pesel-number)
   - [Add a person](#add-a-person)
   - [Update a person](#update-a-person)
   - [Delete a person](#delete-a-person)
@@ -283,7 +288,12 @@ Message
 ```
 
 # API requests and responses
-## Get all persons
+## View all API requests
+### Request - GET
+```
+http://127.0.0.1:5000/help
+```
+## Get a list of all persons
 ### Request - GET <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/persons
@@ -313,7 +323,16 @@ http://127.0.0.1:5000/persons
     }
 ]
 ```
-## Get a single person
+## Get the number of persons on the list
+### Request - GET
+```
+http://127.0.0.1:5000/persons/count
+```
+### Response
+```JSON
+7
+```
+## Get a person by pesel number
 ### Request - GET <!-- omit in toc -->
 ```
 http://127.0.0.1:5000/person?pesel=12345678905
@@ -336,6 +355,7 @@ http://127.0.0.1:5000/person?pesel=12345678905
 ```
 http://127.0.0.1:5000/person?pesel=12345678905&imie=Adam&nazwisko=Nowak&stanowisko=mechanik&data_urodzenia=2000-02-02&data_zatrudnienia=2024-01-01
 ```
+add all of the data
 ### Resposnse <!-- omit in toc -->
 ```JSON
 {}
@@ -345,6 +365,7 @@ http://127.0.0.1:5000/person?pesel=12345678905&imie=Adam&nazwisko=Nowak&stanowis
 ```
 http://127.0.0.1:5000/person?pesel=12345678905&imie=Jan&nazwisko=Nowak&stanowisko=elektryk
 ```
+you need to add the pesel number and only the data you want to update. the pesel won't be updated
 ### Resposnse <!-- omit in toc -->
 ```JSON
 {}
@@ -354,6 +375,7 @@ http://127.0.0.1:5000/person?pesel=12345678905&imie=Jan&nazwisko=Nowak&stanowisk
 ```
 http://127.0.0.1:5000/person?pesel=12345678905
 ```
+only the pesel is needed
 ### Resposnse <!-- omit in toc -->
 ```JSON
 {}
