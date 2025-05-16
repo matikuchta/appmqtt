@@ -5,6 +5,7 @@ services:
     image: 192.168.8.129:8101/appmqtt
     volumes:
       - appmqtt_config:/app/config/
+      - appmqtt_data:/app/data/
     ports:
       - "5555:5000"
     restart: always
@@ -15,3 +16,9 @@ volumes:
       type: none
       o: bind
       device: ./volumes/config/
+  appmqtt_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./volumes/data/
