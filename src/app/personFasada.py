@@ -14,10 +14,10 @@ from app.types.config import Config
 # if TYPE_CHECKING:
 
 class PersonFasada(ISubscriber):
-    def __init__(self, config:Config, persons:List[Person]=[], name:str="subscriber") -> None:
+    def __init__(self, config:Config, save_path:str, persons:List[Person]=[], name:str="subscriber") -> None:
         self.name:str = name
         self.config:Config = config["mqtt"]
-        self.save_path:str = config["save_path"]
+        self.save_path:str = save_path
         self.persons:List[Person] = persons
         
     def ValidateData(self, data:Person) -> bool:
