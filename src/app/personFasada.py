@@ -16,7 +16,8 @@ from app.types.config import Config
 class PersonFasada(ISubscriber):
     def __init__(self, config:Config, persons:List[Person]=[], name:str="subscriber") -> None:
         self.name:str = name
-        self.config:Config = config
+        self.config:Config = config["mqtt"]
+        self.save_path:str = config["save_path"]
         self.persons:List[Person] = persons
         
     def ValidateData(self, data:Person) -> bool:
@@ -76,8 +77,8 @@ class PersonFasada(ISubscriber):
         return len(self.persons)
     def SaveData(self) -> bool:
         try:
-            if self.config["save_path"] != "":
-                with open(self.config["save_path"], "w") as file:
+            if self.save_path != "":
+                with open(self.save_path, "w") as file:
                     json.dump(self.persons, file, indent=2)
                 return True
             return False

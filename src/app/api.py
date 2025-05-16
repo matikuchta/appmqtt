@@ -73,4 +73,5 @@ class API:
         self.sub.ModifyPerson(json.dumps(data))
         self.sub.SaveData()
         return jsonify({})
+
     

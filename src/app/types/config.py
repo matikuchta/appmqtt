@@ -1,8 +1,8 @@
 from typing import TypedDict
+from app.types.mqttconfig import MQTTConfig
+from app.types.flaskconfig import FlaskConfig
 class Config(TypedDict):
-    broker:str
-    client_id:str
     save_path:str
-    port:int
-    keepalive:int
-    topics:list[str]
+    mqtt:MQTTConfig
+    flask:FlaskConfig
+    

@@ -1,14 +1,22 @@
 {
-    "broker":"127.0.0.1",
-    "client_id":"myclient",
     "save_path":"persons.json",
-    "port": 1883,
-    "keepalive":60,
-    "topics": [
-    "app/person/add/request",
-    "app/person/del/request",
-    "app/person/update/request",
-    "app/person/get/request",
-    "app/persons/get/request",
-    "app/persons/count/request"
-]}
+    "mqtt":{
+        "broker":"127.0.0.1",
+        "client_id":"myclient",
+        "port": 1883,
+        "keepalive":60,
+        "topics": [
+        "app/person/add/request",
+        "app/person/del/request",
+        "app/person/update/request",
+        "app/person/get/request",
+        "app/persons/get/request",
+        "app/persons/count/request"
+        ]
+    }, 
+    "flask":{
+        "adress": "127.0.0.1",
+        "port":5000,
+        "debug":true
+    }
+}
