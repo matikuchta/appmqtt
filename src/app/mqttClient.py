@@ -23,7 +23,7 @@ class MQTTClient(IPublisher):
     def on_connect(self, broker:str, port:int, keepalive:int, reasonCode:str) -> None:
         log.debug(f"Connected with reason code:{reasonCode}")
     def on_disconnect(self, reasonCode:str) -> None:
-        log.debug("Disconnected with reason code:", reasonCode)
+        log.debug(f"Disconnected with reason code: {reasonCode}")
     def on_message(self, client, userdata, msg)-> None:
         subs=self.subscribers.get(msg.topic, [])
         for sub in subs:
