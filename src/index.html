@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add a person</h1>
+    <form>
+        <label>
+            Imie:<input type="text" id="imie">
+        </label>
+        <label>
+            Nazwisko: <input type="text" id="nazwisko">
+        </label>
+        <label>
+            Pesel: <input type="number" id = "pesel" min="10000000000" max="99999999999">
+        </label>
+        <label>
+            Stanowisko: <input type="text" id="stanowisko">
+        </label>
+        <label>
+            Data Urodzenia: <input type="date" id="data_urodzenia">
+        </label>
+        <label>
+            Data Zatrudnienia: <input type="date" id="data_zatrudnienia">
+        </label>
+        <input type="button" value="dodaj" id="add">
+    </form>
+    <p id="addresponse"></p>
+    <script>
+        add.onclick=()=>{
+        fetch('http://127.0.0.1:5000/person', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    imie: imie.value,
+    nazwisko: nazwisko.value,
+    pesel: pesel.value,
+    stanowisko: stanowisko.value,
+    data_urodzenia: data_urodzenia.value,
+    data_zatrudnienia: data_zatrudnienia.value
+  })
+})
+.then(response => response.json())
+.then(data => {
+  addresponse.innerHTML = 'Person added:'+data
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+        }
+
+    </script>
+    <h1>Get a person</h1>
+    <form>
+        <label>
+            Pesel <input type="text" id="getpesel">
+        </label>
+        <input type="button" value="wyszukaj" id="get1">
+
+    </form>
+    <p id="get1response"></p>
+    <script>
+        get1.onclick=()=>{
+            
+            a="http://127.0.0.1:5000/person?pesel="+getpesel.value
+            console.log(a)
+                fetch(a)
+                .then(response=>response.json())
+                .then(response=>{
+                    res="<table>"
+                console.log(response)
+                   
+                        res+="<tr>"
+                            for(const key in response){
+                                if (response.hasOwnProperty(key)) {
+                                res+="<td>"+response[key]+"</td>"
+                                }
+                            }
+                        res+="</tr>"
+                    
+                    res+="</table>" 
+                get1response.innerHTML = res
+                })
+        }
+    </script>
+    <h1>Get all persons</h1>
+    <input type="button" id="getall" value="wyswietl wszystkie osoby">
+    <p id="getallresponse"></p>
+    <script>
+        getall.onclick=()=>{
+            res="<table>"
+            fetch("http://127.0.0.1:5000/persons")
+                .then(response=>response.json())
+                .then(response=>{
+                console.log(response)
+                    for (const person of response){
+                        res+="<tr>"
+                            for(const key in person){
+                                if (person.hasOwnProperty(key)) {
+                                res+="<td>"+person[key]+"</td>"
+                                }
+                            }
+                        res+="</tr>"
+                    }
+                    res+="</table>" 
+                getallresponse.innerHTML = res
+                })
+        }
+    </script>
+    <h1>Delete a person</h1>
+    <form>
+        <label>
+            Pesel <input type="text" id="delpesel">
+        </label>
+        <input type="button" value="usuń" id="del">
+
+    </form>
+    <p id="delresponse"></p>
+    <script>
+     del.onclick=()=>{
+            
+            a="http://127.0.0.1:5000/person?pesel="+delpesel.value
+            console.log(a)
+                fetch(a, {method:'DELETE'})
+                //.then(response=>response.json())
+     }
+        </script>
+        <h1>Update a person</h1>
+    <form>
+        <label>
+            Imie:<input type="text" id="imieupd">
+        </label>
+        <label>
+            Nazwisko: <input type="text" id="nazwiskoupd">
+        </label>
+        <label>
+            Pesel: <input type="number" id = "peselupd" min="10000000000" max="99999999999">
+        </label>
+        <label>
+            Stanowisko: <input type="text" id="stanowiskoupd">
+        </label>
+        <label>
+            Data Urodzenia: <input type="date" id="data_urodzeniaupd">
+        </label>
+        <label>
+            Data Zatrudnienia: <input type="date" id="data_zatrudnieniaupd">
+        </label>
+        <input type="button" value="aktualizuj" id="upd">
+    </form>
+    <p id="updresponse"></p>
+    <script>
+        upd.onclick=()=>{
+        const imie = document.getElementById('imieupd');
+        const nazwisko = document.getElementById('nazwiskoupd');
+        const pesel = document.getElementById('peselupd');
+        const stanowisko = document.getElementById('stanowiskoupd');
+        const dataUrodzenia = document.getElementById('data_urodzeniaupd');
+        const dataZatrudnienia = document.getElementById('data_zatrudnieniaupd');
+    let url = 'http://127.0.0.1:5000/person'
+    if (pesel.value.trim() !== ''){
+       url+=('?pesel='+ pesel.value.trim());
+        if (imie.value.trim() !== '') url+=('&imie='+ imie.value.trim());
+        if (nazwisko.value.trim() !== '') url+=('&nazwisko='+ nazwisko.value.trim());
+        
+        if (stanowisko.value.trim() !== '') url+=('&stanowisko='+ stanowisko.value.trim());
+        if (dataUrodzenia.value !== '') url+=('&data_urodzenia='+ dataUrodzenia.value);
+        if (dataZatrudnienia.value !== '') url+=('&data_zatrudnienia='+ dataZatrudnienia.value);
+    } 
+            console.log(url);  
+            fetch(url, {method:'PATCH'})
+                //.then(response=>response.json())
+     }
+
+    </script>
+</body>
+</html>

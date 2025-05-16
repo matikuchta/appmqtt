@@ -5,6 +5,7 @@ import json
 import logging as log
 from typing import Any
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 
 from app.mqttClient import MQTTClient
@@ -36,12 +37,13 @@ if __name__ == '__main__':
 
     persons, path = loadPersons(config)
     
-    sub:PersonFasada = PersonFasada(config, persons, path, "sub1")
+    sub:PersonFasada = PersonFasada(config, path, persons, "sub1")
     client.attachAll(sub, config["mqtt"].get("topics"))
     client.connect()
     client.subscribe("app/+/+/request")
     client.client.loop_start()
     app = Flask(__name__)
+    CORS(app)
     api = API(app, sub)
     app.run(host=config["flask"]["adress"], port=config["flask"]["port"], debug=config["flask"]["debug"], use_reloader=False)
 

@@ -36,21 +36,22 @@ class API:
         res:json = self.sub.GetPersonsCount()
         return jsonify(res)
     def add_person(self)->json:
-        person:Person = {
-            "imie" : request.args.get('imie'),
-            "nazwisko" : request.args.get('nazwisko'),
-            "pesel" : request.args.get('pesel'),
-            "stanowisko" : request.args.get('stanowisko'),
-            "data_urodzenia" : request.args.get('data_urodzenia'),
-            "data_zatrudnienia" : request.args.get('data_zatrudnienia')
+        data = request.get_json()
+        person = {
+            "imie": data.get('imie'),
+            "nazwisko": data.get('nazwisko'),
+            "pesel": data.get('pesel'),
+            "stanowisko": data.get('stanowisko'),
+            "data_urodzenia": data.get('data_urodzenia'),
+            "data_zatrudnienia": data.get('data_zatrudnienia')
         }
         self.sub.AddPerson(json.dumps(person))
         self.sub.SaveData()
-        return jsonify({})
+        return jsonify(person)
     def del_person(self)->json:
         pesel:str = request.args.get('pesel')
         data:GetDelPersonData = {'pesel': pesel}
-        self.sub.RemovePerson(json.dumps(data))
+        person:Person = self.sub.RemovePerson(json.dumps(data))
         self.sub.SaveData()
         return jsonify({})
     def patch_person(self)->json:
