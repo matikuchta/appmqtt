@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  appmqtt:
+    image: 192.168.8.129:8101/appmqtt
+    volumes:
+      - appmqtt_config:/app/config/
+    ports:
+      - "5555:5000"
+    restart: always
+volumes:
+  appmqtt_config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./volumes/config/

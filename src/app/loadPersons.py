@@ -3,7 +3,7 @@ import logging as log
 import json
 from app.types.person import Person
 from app.types.config import Config
-def loadPersons(config:Config)->list[Person]:
+def loadPersons(config:Config)->tuple[list[Person], str]:
     try:
         path:str = config["save_path"]
         if len(sys.argv)>2:
@@ -15,4 +15,4 @@ def loadPersons(config:Config)->list[Person]:
     except Exception as e:
         persons:list[Person]=[]
         print(f"file {path} not loaded: {e}")
-    return persons
+    return persons, path

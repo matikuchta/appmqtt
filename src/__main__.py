@@ -22,7 +22,7 @@ log.basicConfig(level=log.DEBUG)
 
 def handleExit(signal: int, frame: Any)->None:
     if sub.SaveData():
-        log.debug(f"data saved successfully to file: {path}")
+        log.debug(f"data saved successfully to save file: {path}")
     log.info("The app has been terminated successfully")
     sys.exit(0)
 
@@ -34,9 +34,9 @@ if __name__ == '__main__':
 
     client:MQTTClient = MQTTClient(config)
 
-    persons:list[Person] = loadPersons(config)
+    persons, path = loadPersons(config)
     
-    sub:PersonFasada = PersonFasada(config, persons, "sub1")
+    sub:PersonFasada = PersonFasada(config, persons, path, "sub1")
     client.attachAll(sub, config["mqtt"].get("topics"))
     client.connect()
     client.subscribe("app/+/+/request")
