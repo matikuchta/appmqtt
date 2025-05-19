@@ -1,5 +1,7 @@
 # MQTT personel menagement system operating on JSON objects <!-- omit in toc -->
+# this readme is not up to date: please check the documentation in the docs folder <!--omit in toc-->
 # Table of contents <!-- omit in toc -->
+- [this readme is not up to date: please check the documentation in the docs folder ](#this-readme-is-not-up-to-date-please-check-the-documentation-in-the-docs-folder-)
 - [Features](#features)
 - [Used Technology](#used-technology)
 - [Config](#config)

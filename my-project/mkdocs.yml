@@ -1,0 +1,9 @@
+site_name: Documentation
+theme:
+  name: material
+nav:
+- Home : index.md
+- About: about.md
+- MQTT : mqtt.md
+- Flask : flask.md
+- Config : config.md

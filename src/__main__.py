@@ -7,7 +7,6 @@ from typing import Any
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-
 from app.mqttClient import MQTTClient
 from app.personFasada import PersonFasada
 from app.types.person import Person
