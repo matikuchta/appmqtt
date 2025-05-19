@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        td{
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-    </style>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <article>
     <h1>All persons</h1>
     <p id="getallresponse"></p>
     <script>
@@ -28,15 +24,45 @@
                                 res+="<td>"+person[key]+"</td>"
                                 }
                             }
+                            res+="<td><button onclick='deleteperson("+person.pesel+")'>X</button></td>"
                         res+="</tr>"
                     }
+                    
                     res+="</table>" 
                 getallresponse.innerHTML = res
         })
     }
     getallpersons()
+    function deleteperson(pesel){
+            if(confirm("remove person with pesel "+pesel+"?")){
+
+            a="http://127.0.0.1:5000/person?pesel="+pesel
+            console.log(a)
+                fetch(a, {method:'DELETE'})
+                //.then(response=>response.json())
+                .then(() => getallpersons())
+            }
+    }
     //setInterval(getallpersons(), 1000)
     </script>
+    </article>
+    <nav>
+        <button onclick="show('#addperson')">dodaj</button>
+        <button onclick="show('#deleteperson')">usuń</button>
+        <button onclick="show('#updateperson')">edytuj</button>
+        <button onclick="show('#getperson')">wyswietl 1</button>
+        <script>
+           function show(name) {
+                const divs = document.querySelectorAll("div");
+                divs.forEach(div => {
+                div.style.display = "none"; // poprawna wartość: "none", nie "None"
+            });
+            document.querySelector(name).style.display = "block";
+            }
+
+        </script>
+    </nav>
+    <div id="addperson">
     <h1>Add a person</h1>
     <form>
         <label>
@@ -88,6 +114,8 @@
         }
 
     </script>
+    </div>
+    <div id="getperson">
     <h1>Get a person</h1>
     <form>
         <label>
@@ -121,7 +149,8 @@
                 })
         }
     </script>
-    
+    </div>
+    <div id="deleteperson">
     <h1>Delete a person</h1>
     <form>
         <label>
@@ -140,6 +169,8 @@
                 .then(() => getallpersons())
      }
         </script>
+    </div>
+    <div id="updateperson">
         <h1>Update a person</h1>
     <form>
         <label>
@@ -186,7 +217,8 @@
                 //.then(response=>response.json())
                 .then(() => getallpersons())
      }
-
+     show("#addperson")
     </script>
+    </div>
 </body>
 </html>
