@@ -51,6 +51,7 @@
         <button onclick="show('#deleteperson')">usuń</button>
         <button onclick="show('#updateperson')">edytuj</button>
         <button onclick="show('#getperson')">wyswietl 1</button>
+        <button id="color">change color theme</button>
         <script>
            function show(name) {
                 const divs = document.querySelectorAll("div");
@@ -59,7 +60,15 @@
             });
             document.querySelector(name).style.display = "block";
             }
-
+            color.onclick=()=>{
+                if(document.querySelector("link").getAttribute("href")=="style.css"){
+                    document.querySelector("link").setAttribute("href", "style2.css") 
+                }
+                else{
+                    document.querySelector("link").setAttribute("href", "style.css") 
+                }
+                           
+            }
         </script>
     </nav>
     <div id="addperson">
