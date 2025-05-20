@@ -6,7 +6,7 @@
     <title>Document</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
+<body class="darkmode">
     <article>
     <h1>All persons</h1>
     <p id="getallresponse"></p>
@@ -61,11 +61,11 @@
             document.querySelector(name).style.display = "block";
             }
             color.onclick=()=>{
-                if(document.querySelector("link").getAttribute("href")=="style.css"){
-                    document.querySelector("link").setAttribute("href", "style2.css") 
+                if(document.body.getAttribute("class")=="darkmode"){
+                    document.body.setAttribute("class", "") 
                 }
                 else{
-                    document.querySelector("link").setAttribute("href", "style.css") 
+                    document.body.setAttribute("class", "darkmode") 
                 }
                            
             }

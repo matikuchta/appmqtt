@@ -1,0 +1,103 @@
+$col:black;
+$bgcol1:white;
+$bgcol2:lightgray;
+$bgcol3:#f9f9f9;
+$btncol:white;
+$btnbgcol:black;
+$dkcol:white;
+$dkbgcol1:#060C0C;
+$dkbgcol3:#001631;
+$dkbgcol2:darkblue;
+$dkbtncol: darkblue;
+
+
+
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table{
+     border-collapse: collapse;
+     tr:hover{
+    background-color: $bgcol2;
+    
+}
+td{
+            border: 1px solid $btnbgcol;
+           &:hover{
+            font-weight: bold;
+           }
+        }
+}
+
+h1{
+    text-align: center;
+    width: 100%;
+}
+nav{
+    width: 20%;
+    height: 50%;
+    button{
+    padding: 3%;
+}
+}
+div{
+    width: 70%;
+    height: 50%;
+    text-align: center;
+    [type="button"]{
+        padding: 1%;
+    }
+}
+article{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+body>*{
+    outline: 3px solid $col;
+    border-radius: 20px;
+    padding: 1.5%;
+    margin: 1%;
+
+}
+body>*:hover{
+    background-color: $bgcol3;
+}
+body{
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0;
+}
+button, [type="button"]{
+    color: $btncol;
+    background-color: $btnbgcol;
+    border: none;
+    border-radius: 10%;
+}
+label, button {
+    display: block;
+    margin-bottom: 5px;
+}
+body.darkmode{
+    background-color: $dkbgcol1;
+    color:$dkcol;
+    div, article, nav{
+        outline-color: $dkbtncol;
+        &:hover{
+            background-color: $dkbgcol3;
+        }
+    }
+    td{
+        border-color: $dkbtncol;
+    }
+    tr:hover{
+        background-color: $dkbgcol2;
+    }
+    button, [type="button"]{
+        background-color: $dkbtncol;
+        
+    }
+}
