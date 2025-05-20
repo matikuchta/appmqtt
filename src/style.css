@@ -3,16 +3,26 @@
 }
 
 table {
+  text-align: left;
   border-collapse: collapse;
 }
-table tr:hover {
-  background-color: lightgray;
-}
-table td {
+table tr > * {
   border: 1px solid black;
+  padding: 0 5px;
 }
-table td:hover {
+table tr > *:hover {
   font-weight: bold;
+}
+table button {
+  width: 90%;
+  margin: 5%;
+}
+table tr:hover {
+  background-color: black;
+  color: white;
+}
+table tr:hover button {
+  outline: 1px solid white;
 }
 
 h1 {
@@ -83,12 +93,15 @@ body.darkmode div, body.darkmode article, body.darkmode nav {
 body.darkmode div:hover, body.darkmode article:hover, body.darkmode nav:hover {
   background-color: #001631;
 }
-body.darkmode td {
-  border-color: darkblue;
+body.darkmode tr > * {
+  border: 1px solid darkblue;
+  outline: 1px solid darkblue;
 }
 body.darkmode tr:hover {
   background-color: darkblue;
 }
-body.darkmode button, body.darkmode [type=button] {
+body.darkmode button, body.darkmode input {
   background-color: darkblue;
+  color: white;
+  border-color: darkblue;
 }/*# sourceMappingURL=style.css.map */

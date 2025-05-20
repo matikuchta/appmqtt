@@ -55,6 +55,7 @@ class PersonFasada(ISubscriber):
                         person[key]=value
                         person["data_modyfikacji"] = datetime.now().isoformat()
                 return True
+        return False
 
     def RemovePerson(self, data:str) -> bool:
         data:GetDelPersonData=json.loads(data)

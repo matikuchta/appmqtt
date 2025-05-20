@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Person Manager</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body class="darkmode">
@@ -12,18 +12,37 @@
     <p id="getallresponse"></p>
     <script>
         function getallpersons(){
-            res="<table>"
+            res="<table><tr>"
+            res+="<th>lp.</th>"
+            res+="<th>Imie</th>"
+            res+="<th>Nazwisko</th>"
+            res+="<th>Stanowisko</th>"
+            res+="<th>Pesel</th>"
+            res+="<th>Data Urodzenia</th>"
+            res+="<th>Data Zatrudnienia</th>"
+            res+="<th>Usuń</th>"
+
+
+            res+="</tr>"
             fetch("http://127.0.0.1:5000/persons")
                 .then(response=>response.json())
                 .then(response=>{
                 console.log(response)
+                let i=0
                     for (const person of response){
                         res+="<tr>"
-                            for(const key in person){
+                            res+="<th>"+(++i)+"</th>"
+                            res+="<td>"+person["imie"]+"</td>"
+                            res+="<td>"+person["nazwisko"]+"</td>"
+                            res+="<td>"+person["stanowisko"]+"</td>"
+                            res+="<td>"+person["pesel"]+"</td>"
+                            res+="<td>"+person["data_urodzenia"].substring(0, 10)+"</td>"
+                            res+="<td>"+person["data_zatrudnienia"].substring(0, 10)+"</td>"
+                            /*for(const key in person){
                                 if (person.hasOwnProperty(key)) {
                                 res+="<td>"+person[key]+"</td>"
                                 }
-                            }
+                            }*/
                             res+="<td><button onclick='deleteperson("+person.pesel+")'>X</button></td>"
                         res+="</tr>"
                     }
@@ -75,22 +94,22 @@
     <h1>Add a person</h1>
     <form>
         <label>
-            Imie:<input type="text" id="imie">
+            Imie:<input type="text" id="imie" required>
         </label>
         <label>
-            Nazwisko: <input type="text" id="nazwisko">
+            Nazwisko: <input type="text" id="nazwisko" required>
         </label>
         <label>
-            Pesel: <input type="number" id = "pesel" min="10000000000" max="99999999999">
+            Pesel: <input type="number" id = "pesel" min="10000000000" max="99999999999" required>
         </label>
         <label>
-            Stanowisko: <input type="text" id="stanowisko">
+            Stanowisko: <input type="text" id="stanowisko" required>
         </label>
         <label>
-            Data Urodzenia: <input type="date" id="data_urodzenia">
+            Data Urodzenia: <input type="date" id="data_urodzenia" required>
         </label>
         <label>
-            Data Zatrudnienia: <input type="date" id="data_zatrudnienia">
+            Data Zatrudnienia: <input type="date" id="data_zatrudnienia" required>
         </label>
         <input type="button" value="dodaj" id="add">
     </form>
@@ -128,7 +147,7 @@
     <h1>Get a person</h1>
     <form>
         <label>
-            Pesel <input type="text" id="getpesel">
+            Pesel <input type="text" id="getpesel" required>
         </label>
         <input type="button" value="wyszukaj" id="get1">
 
@@ -144,7 +163,7 @@
                 .then(response=>{
                     res="<table>"
                 console.log(response)
-                   
+                   if (response!=null){
                         res+="<tr>"
                             for(const key in response){
                                 if (response.hasOwnProperty(key)) {
@@ -154,7 +173,11 @@
                         res+="</tr>"
                     
                     res+="</table>" 
-                get1response.innerHTML = res
+                get1response.innerHTML = res}
+                else{
+                    get1response.innerHTML = "person not found"
+                }
+
                 })
         }
     </script>
@@ -163,7 +186,7 @@
     <h1>Delete a person</h1>
     <form>
         <label>
-            Pesel <input type="text" id="delpesel">
+            Pesel <input type="text" id="delpesel" required>
         </label>
         <input type="button" value="usuń" id="del">
 
@@ -175,7 +198,12 @@
             console.log(a)
                 fetch(a, {method:'DELETE'})
                 //.then(response=>response.json())
-                .then(() => getallpersons())
+                
+                .then(response => response.json())
+                .then(data => {
+  delresponse.innerHTML = 'Person deleted:'+data
+})
+.then(() => getallpersons())
      }
         </script>
     </div>
@@ -189,7 +217,7 @@
             Nazwisko: <input type="text" id="nazwiskoupd">
         </label>
         <label>
-            Pesel: <input type="number" id = "peselupd" min="10000000000" max="99999999999">
+            Pesel: <input type="number" id = "peselupd" min="10000000000" max="99999999999" required>
         </label>
         <label>
             Stanowisko: <input type="text" id="stanowiskoupd">
@@ -224,7 +252,12 @@
             console.log(url);  
             fetch(url, {method:'PATCH'})
                 //.then(response=>response.json())
-                .then(() => getallpersons())
+                
+                .then(response => response.json())
+                .then(data => {
+  updresponse.innerHTML = 'Person updated:'+data
+})
+.then(() => getallpersons())
      }
      show("#addperson")
     </script>

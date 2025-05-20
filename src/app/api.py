@@ -7,6 +7,8 @@ from app.types.config import Config
 from app.personFasada import PersonFasada
 from app.types.updatepersondata import UpdatePersonData
 from app.types.getdelpersondata import GetDelPersonData
+def status(status:bool)->str:
+        return "success" if status else "error"
 class API:
     def __init__(self, app:Flask, sub:PersonFasada):
         self.sub:PersonFasada = sub
@@ -22,6 +24,7 @@ class API:
         return "<h1>Persons API</h1><p>use /help to view commands</p>"
     def help(self)->str:
         return send_file("help.html")
+    
     def get_person(self)->json:
         pesel:str = request.args.get('pesel')
         data:GetDelPersonData = {'pesel': pesel}
@@ -35,7 +38,7 @@ class API:
     def get_persons_count(self)->json:
         res:json = self.sub.GetPersonsCount()
         return jsonify(res)
-    def add_person(self)->json:
+    def add_person(self)->bool:
         data = request.get_json()
         person = {
             "imie": data.get('imie'),
@@ -45,15 +48,16 @@ class API:
             "data_urodzenia": data.get('data_urodzenia'),
             "data_zatrudnienia": data.get('data_zatrudnienia')
         }
-        self.sub.AddPerson(json.dumps(person))
+        
+        added = self.sub.AddPerson(json.dumps(person))
         self.sub.SaveData()
-        return jsonify(person)
+        return jsonify(status(added))
     def del_person(self)->json:
         pesel:str = request.args.get('pesel')
         data:GetDelPersonData = {'pesel': pesel}
-        person:Person = self.sub.RemovePerson(json.dumps(data))
+        deleted = self.sub.RemovePerson(json.dumps(data))
         self.sub.SaveData()
-        return jsonify({})
+        return jsonify(status(deleted))
     def patch_person(self)->json:
         person_data:Person = {}
         if request.args.get('imie'):
@@ -71,8 +75,8 @@ class API:
             "pesel" : request.args.get('pesel'),
             "to_update" : person_data
         }
-        self.sub.ModifyPerson(json.dumps(data))
+        modified =  self.sub.ModifyPerson(json.dumps(data))
         self.sub.SaveData()
-        return jsonify({})
+        return jsonify(status(modified))
 
     
