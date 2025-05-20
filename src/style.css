@@ -1,17 +1,14 @@
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 table {
   text-align: left;
   border-collapse: collapse;
 }
 table tr > * {
   border: 1px solid black;
-  padding: 0 5px;
-}
-table tr > *:hover {
-  font-weight: bold;
+  padding: 0 7px;
+  /* &:hover{
+        font-weight: bold;
+        padding-right:0;
+   }*/
 }
 table button {
   width: 90%;
@@ -21,8 +18,32 @@ table tr:hover {
   background-color: black;
   color: white;
 }
-table tr:hover button {
-  outline: 1px solid white;
+
+body.darkmode {
+  background-color: #060C0C;
+  color: white;
+}
+body.darkmode div, body.darkmode article, body.darkmode nav {
+  outline-color: darkblue;
+}
+body.darkmode div:hover, body.darkmode article:hover, body.darkmode nav:hover {
+  background-color: #001631;
+}
+body.darkmode tr > * {
+  border: 1px solid darkblue;
+  outline: 1px solid darkblue;
+}
+body.darkmode tr:hover {
+  background-color: darkblue;
+}
+body.darkmode button, body.darkmode input {
+  background-color: darkblue;
+  color: white;
+  border-color: darkblue;
+}
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -81,27 +102,4 @@ button, [type=button] {
 label, button {
   display: block;
   margin-bottom: 5px;
-}
-
-body.darkmode {
-  background-color: #060C0C;
-  color: white;
-}
-body.darkmode div, body.darkmode article, body.darkmode nav {
-  outline-color: darkblue;
-}
-body.darkmode div:hover, body.darkmode article:hover, body.darkmode nav:hover {
-  background-color: #001631;
-}
-body.darkmode tr > * {
-  border: 1px solid darkblue;
-  outline: 1px solid darkblue;
-}
-body.darkmode tr:hover {
-  background-color: darkblue;
-}
-body.darkmode button, body.darkmode input {
-  background-color: darkblue;
-  color: white;
-  border-color: darkblue;
 }/*# sourceMappingURL=style.css.map */

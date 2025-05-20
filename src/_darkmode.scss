@@ -1,0 +1,26 @@
+$dkbgcol1:#060C0C;
+$dkbgcol3:#001631;
+body.darkmode{
+    background-color: $dkbgcol1;
+    color:white;
+    div, article, nav{
+        outline-color: darkblue;
+        &:hover{
+            background-color: $dkbgcol3;
+            
+        }
+    }
+    tr>*{
+        border: 1px solid darkblue;
+        outline: 1px solid darkblue;
+    }
+    tr:hover{
+        background-color: darkblue;
+        
+    }
+    button, input{
+        background-color: darkblue;
+        color:white;
+        border-color: darkblue;
+    }
+}

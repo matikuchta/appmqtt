@@ -6,7 +6,7 @@
     <title>Person Manager</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body class="darkmode">
+<body>
     <article>
     <h1>All persons</h1>
     <p id="getallresponse"></p>
@@ -72,6 +72,15 @@
         <button onclick="show('#getperson')">wyswietl 1</button>
         <button id="color">change color theme</button>
         <script>
+           function getCookie(name) {
+                return document.cookie
+                .split('; ')
+                .find(row => row.startsWith(name + '='))
+                ?.split('=')[1];
+            }
+           if (getCookie("darkmode") === "true") {
+        document.body.setAttribute("class", "darkmode");
+    }
            function show(name) {
                 const divs = document.querySelectorAll("div");
                 divs.forEach(div => {
@@ -82,9 +91,11 @@
             color.onclick=()=>{
                 if(document.body.getAttribute("class")=="darkmode"){
                     document.body.setAttribute("class", "") 
+                    document.cookie = "darkmode=false"
                 }
                 else{
                     document.body.setAttribute("class", "darkmode") 
+                    document.cookie = "darkmode=true"
                 }
                            
             }
