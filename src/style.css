@@ -49,6 +49,7 @@ body.darkmode button, body.darkmode input {
 h1 {
   text-align: center;
   width: 100%;
+  font-size: xx-large;
 }
 
 nav {

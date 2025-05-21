@@ -1,5 +1,5 @@
-@use '_table';
-@use '_darkmode';
+@use 'table';
+@use 'darkmode';
 $bgcol3:#f9f9f9;
 
 * {
@@ -11,6 +11,7 @@ $bgcol3:#f9f9f9;
 h1{
     text-align: center;
     width: 100%;
+    font-size: xx-large;
 }
 nav{
     width: 20%;
