@@ -63,11 +63,13 @@
         }
 
  updatedData = {};
+ data = new Date
 if(imie.value.trim() !== '') updatedData.imie = imie.value.trim();
 if(nazwisko.value.trim() !== '') updatedData.nazwisko = nazwisko.value.trim();
 if(stanowisko.value.trim() !== '') updatedData.stanowisko = stanowisko.value.trim();
 if(dataUrodzenia.value !== '') updatedData.data_urodzenia = dataUrodzenia.value;
 if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnienia.value;
+updatedData.data_modyfikacji= data
 
     } else {
         // Edycja z tabeli (kliknięcie na / przy osobie)
@@ -290,7 +292,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
     <script>
         get1.onclick=()=>{
             
-            a="http://127.0.0.1:8000/persons/pesel/"+getpesel.value
+            a="http://127.0.0.1:8000/person/pesel/"+getpesel.value
             console.log(a)
                 fetch(a)
                 .then(response=>response.json())
@@ -352,7 +354,10 @@ function deleteperson(pesel){
             console.log(a);  // Możesz sprawdzić wynik URL w konsoli
 
             // Wykonaj zapytanie DELETE
+            if(confirm(`usunąć osobę z peselem :${pesel}?`)){
             return fetch(a, { method: 'DELETE' });
+            }
+            
         })
         .then(() => getallpersons())  // Po usunięciu, zaktualizuj listę osób
         
