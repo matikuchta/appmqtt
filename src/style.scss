@@ -55,6 +55,11 @@ button, [type="button"]{
     border: none;
     border-radius: 10%;
 }
+select{
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 3px;
+}
 label, button {
     display: block;
     margin-bottom: 5px;

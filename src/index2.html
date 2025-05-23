@@ -17,7 +17,32 @@
                 .then(response=>{
                 return response["id"]})
      }
-    
+     jobs={}
+        fetch("http://127.0.0.1:8000/jobs/")
+                .then(response=>response.json())
+                .then(response=>{
+                    jobdict={}
+                    response.forEach(e => {
+                        jobdict[e["id"]]=e["nazwa"]
+                    });
+                    console.log(jobdict)
+                    jobs = jobdict
+                    
+        stanowisko.innerHTML = "";
+        console.log(jobs)
+        for (const id in jobs) {
+            const name = jobs[id];
+            stanowisko.innerHTML += `<option value="${id}">${name}</option>`;
+            stanowiskoupd.innerHTML = stanowisko.innerHTML
+        }
+                    
+            })
+    function getjob(id){
+        return jobs[id]
+    }
+
+
+
         function update(p = "") {
     let peselValue;
     let updatedData = {};
@@ -121,7 +146,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
                             res+="<th>"+(++i)+"</th>"
                             res+="<td>"+person["imie"]+"</td>"
                             res+="<td>"+person["nazwisko"]+"</td>"
-                            res+="<td>"+person["stanowisko"]+"</td>"
+                            res+="<td>"+getjob(person["stanowisko"])+"</td>"
                             res+="<td>"+person["pesel"]+"</td>"
                             res+="<td>"+person["data_urodzenia"].substring(0, 10)+"</td>"
                             res+="<td>"+person["data_zatrudnienia"].substring(0, 10)+"</td>"
@@ -132,7 +157,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
                                 res+="<th>"+(++i)+"</th>"
                             res+="<td><input type='text' value='"+person["imie"]+"' id='uname'></td>"
                             res+="<td><input type='text' value='"+person["nazwisko"]+"' id='usurname'></td>"
-                            res+="<td><input type='text' value='"+person["stanowisko"]+"' id='ujob'></td>"
+                            res+="<td><select value='"+person["stanowisko"]+"' id='ujob'>"+stanowisko.innerHTML+"</select></td>"
                             
                             res+="<td>"+person["pesel"]+"</td>"
                             res+="<td><input type='date' value='"+person["data_urodzenia"].substring(0, 10)+"' id='udob'></td>"
@@ -145,6 +170,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
                     }
                     
                     res+="</table>" 
+                    
                 getallresponse.innerHTML = res
         })
     }
@@ -200,7 +226,8 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             Pesel: <input type="number" id = "pesel" min="10000000000" max="99999999999" required>
         </label>
         <label>
-            Stanowisko: <input type="text" id="stanowisko" required>
+           Stanowisko: <select id="stanowisko"></select>
+
         </label>
         <label>
             Data Urodzenia: <input type="date" id="data_urodzenia" required>
@@ -347,7 +374,7 @@ function deleteperson(pesel){
             Pesel: <input type="number" id = "peselupd" min="10000000000" max="99999999999" required>
         </label>
         <label>
-            Stanowisko: <input type="text" id="stanowiskoupd">
+            Stanowisko: <select id="stanowiskoupd"></select>
         </label>
         <label>
             Data Urodzenia: <input type="date" id="data_urodzeniaupd">

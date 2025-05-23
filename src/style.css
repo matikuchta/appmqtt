@@ -36,7 +36,7 @@ body.darkmode tr > * {
 body.darkmode tr:hover {
   background-color: darkblue;
 }
-body.darkmode button, body.darkmode input {
+body.darkmode button, body.darkmode input, body.darkmode select {
   background-color: darkblue;
   color: white;
   border-color: darkblue;
@@ -98,6 +98,12 @@ button, [type=button] {
   background-color: black;
   border: none;
   border-radius: 10%;
+}
+
+select {
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 3px;
 }
 
 label, button {
