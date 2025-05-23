@@ -63,13 +63,11 @@
         }
 
  updatedData = {};
- data = new Date
 if(imie.value.trim() !== '') updatedData.imie = imie.value.trim();
 if(nazwisko.value.trim() !== '') updatedData.nazwisko = nazwisko.value.trim();
 if(stanowisko.value.trim() !== '') updatedData.stanowisko = stanowisko.value.trim();
 if(dataUrodzenia.value !== '') updatedData.data_urodzenia = dataUrodzenia.value;
 if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnienia.value;
-updatedData.data_modyfikacji= data
 
     } else {
         // Edycja z tabeli (kliknięcie na / przy osobie)
@@ -115,12 +113,12 @@ updatedData.data_modyfikacji= data
         })
         .then(data => {
             console.log("Zaktualizowano:", data);
-            alert("Dane zostały zaktualizowane.");
+            //alert("Dane zostały zaktualizowane.");
             getallpersons();
         })
         .catch(error => {
             console.error("Błąd:", error.message);
-            alert("Błąd aktualizacji: " + error.message);
+            //alert("Błąd aktualizacji: " + error.message);
         });
 }
      function getallpersons(edit = ""){

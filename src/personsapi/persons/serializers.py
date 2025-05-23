@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Person, Job
+from .models import Person, Job, UserRole
+from django.contrib.auth.models import User
 import re
 
 class JobSerializer(serializers.ModelSerializer):
@@ -36,5 +37,26 @@ class PersonSerializer(serializers.ModelSerializer):
         if (not re.search("^[A-Za-z]{1}[a-z]{1,}$", value)):
             raise serializers.ValidationError("surname must at least 2 characters long, contain only lowercase letters except the first character which can be uppercase")
         return value
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email'),
+            password=validated_data['password']
+        )
+        return user
+
+class UserRoleSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
+    class Meta:
+        model = UserRole
+        fields = ['id', 'user', 'role']
 
 
