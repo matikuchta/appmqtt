@@ -11,3 +11,4 @@ mkdocs
 mkdocs-material
 djangorestframework
 django-cors-headers
+daphne

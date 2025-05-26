@@ -5,8 +5,9 @@
 cd .\src\personsapi\
 ```
 ### launch the server
+use this command from server/personsapi
 ```
-python manage.py runserver
+daphne personsapi.asgi:application
 ```
 the api will launch on port 8000
 ## example html site using the api 
