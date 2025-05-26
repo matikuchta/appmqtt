@@ -12,9 +12,16 @@
     <p id="getallresponse"></p>
     <script>
          function getpersonid(pesel){
-        return fetch("http://127.0.0.1:8000/person/pesel/"+pesel)
+        return fetch("http://127.0.0.1:8000/person/pesel/"+pesel, {
+             method: "GET",
+    headers: {
+      "Authorization": "Token eeb754bf3c0696c9f785e82c54c9721995c3825b",
+      "Content-Type": "application/json"
+    }
+        })
                 .then(response=>response.json())
                 .then(response=>{
+                    console.log(response);
                 return response["id"]})
      }
      jobs={}
@@ -100,7 +107,8 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             return fetch(url, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'
                 },
                 body: JSON.stringify(updatedData)
             });
@@ -246,6 +254,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'
         },
         body: JSON.stringify({
             imie: imie.value,
@@ -337,7 +346,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             console.log(a);  // Możesz sprawdzić wynik URL w konsoli
 
             // Wykonaj zapytanie DELETE
-            return fetch(a, { method: 'DELETE' });
+            return fetch(a, { method: 'DELETE' , headers:{'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'}});
         })
         .then(() => getallpersons())  // Po usunięciu, zaktualizuj listę osób
         
@@ -353,7 +362,7 @@ function deleteperson(pesel){
 
             // Wykonaj zapytanie DELETE
             if(confirm(`usunąć osobę z peselem :${pesel}?`)){
-            return fetch(a, { method: 'DELETE' });
+            return fetch(a, { method: 'DELETE', headers:{'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'} });
             }
             
         })

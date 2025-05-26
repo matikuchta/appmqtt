@@ -29,7 +29,7 @@ class PersonByPeselView(APIView):
             return Response(serializer.data)
         except Person.DoesNotExist:
             return Response({"detail": "Person not found."}, status=status.HTTP_404_NOT_FOUND)
-    permission_classes = [IsAdminOrManager]
+    permission_classes = [IsManagerOrAdminForWrite]
         
 
 

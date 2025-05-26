@@ -1,4 +1,6 @@
 from django.contrib import admin
 from .models import UserRole
 
-admin.site.register(UserRole)
+from rest_framework.authtoken.models import Token
+
+admin.site.register(Token)
