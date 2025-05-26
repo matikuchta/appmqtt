@@ -16,6 +16,7 @@
         <button onclick="show('#deleteperson')">usuń</button>
         <button onclick="show('#updateperson')">edytuj</button>
         <button onclick="show('#getperson')">wyswietl 1</button>
+        <button onclick="show('#login')">zaloguj się</button>
         <button id="color">change color theme</button>
     </nav>
     <div id="addperson">
@@ -90,7 +91,15 @@
         <input type="button" value="aktualizuj" id="upd" onclick="update()">
     </form>
     <p id="updresponse"></p>
-    <script src="scripts/index_dj.js"></script>
+    </div>
+    <div id="login">
+        <form>
+            <label>Username: <input type="text" id="username"></label>
+            <label>Password: <input type="password" id="password"></label>
+            <input type="button" value="zaloguj" id="loginbtn">
+        </form>
+
     </div>
 </body>
+    <script src="scripts/index_dj.js"></script>
 </html>

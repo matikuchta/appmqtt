@@ -1,9 +1,40 @@
+const token = localStorage.getItem('access_token');
+ function refreshAccessToken() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) {
+    return Promise.reject('No refresh token found');
+  }
+
+  return fetch('http://localhost:8000/api/token/refresh/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ refresh: refreshToken })
+  })
+  .then(response => response.json().then(data => ({ status: response.status, body: data })))
+  .then(({ status, body }) => {
+    if (status === 200) {
+      localStorage.setItem('access_token', body.access);
+      console.log('Access token refreshed!');
+      return body.access;  // resolve with new access token
+    } else {
+      console.error('Failed to refresh token:', body);
+      return Promise.reject(body);
+    }
+  })
+  .catch(error => {
+    console.error('Refresh token error:', error);
+    return Promise.reject(error);
+  });
+}
+refreshAccessToken()
 
          function getpersonid(pesel){
         return fetch("http://127.0.0.1:8000/person/pesel/"+pesel, {
              method: "GET",
     headers: {
-      "Authorization": "Token eeb754bf3c0696c9f785e82c54c9721995c3825b",
+      "Authorization": 'Bearer ' + token,
       "Content-Type": "application/json"
     }
         })
@@ -96,7 +127,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'
+                    'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify(updatedData)
             });
@@ -205,7 +236,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'
+            'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
             imie: imie.value,
@@ -270,7 +301,7 @@ get1.onclick=()=>{
             console.log(a);  // Możesz sprawdzić wynik URL w konsoli
 
             // Wykonaj zapytanie DELETE
-            return fetch(a, { method: 'DELETE' , headers:{'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'}});
+            return fetch(a, { method: 'DELETE' , headers:{'Authorization': 'Bearer ' + token}});
         })
         .then(() => getallpersons())  // Po usunięciu, zaktualizuj listę osób
         
@@ -286,12 +317,38 @@ function deleteperson(pesel){
 
             // Wykonaj zapytanie DELETE
             if(confirm(`usunąć osobę z peselem :${pesel}?`)){
-            return fetch(a, { method: 'DELETE', headers:{'Authorization': 'Token eeb754bf3c0696c9f785e82c54c9721995c3825b'} });
+            return fetch(a, { method: 'DELETE', headers:{'Authorization': 'Bearer ' + token} });
             }
             
         })
         .then(() => getallpersons())  // Po usunięciu, zaktualizuj listę osób
         
 };
+loginbtn.onclick=()=>{
+    const uname = username.value;
+    const pass = password.value;
 
+    fetch('http://localhost:8000/api/token/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 'username':uname, 'password':pass })
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+      if (status === 200) {
+        localStorage.setItem('access_token', body.access);
+        localStorage.setItem('refresh_token', body.refresh);
+        alert("Login successful!");
+      } else {
+        alert("Login failed: " + (body.detail || 'Unknown error'));
+      }
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+      alert("Something went wrong. Check the console.");
+    });
+}
      show("#addperson")
+    
