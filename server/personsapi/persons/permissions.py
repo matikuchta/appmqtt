@@ -23,3 +23,14 @@ class IsManagerOrAdminForWrite(BasePermission):
         # Use correct related name here
         user_role = getattr(request.user, 'role', None)
         return user_role and user_role.role in ['admin', 'manager']
+    
+class IsAdminOrCreateOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'POST':
+            return True
+        return request.user.is_authenticated and request.user.is_staff
+class IsAuthenticatedForWrite(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:  # GET, HEAD, OPTIONS
+            return True
+        return request.user and request.user.is_authenticated

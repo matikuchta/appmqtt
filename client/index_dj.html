@@ -12,11 +12,12 @@
     <p id="getallresponse"></p>
     </article>
     <nav>
+        <button onclick="show('#login')" id="loginmenubtn">zaloguj się</button>
+        <button id="logout" style="display: none;">wyloguj się</button>
         <button onclick="show('#addperson')">dodaj</button>
         <button onclick="show('#deleteperson')">usuń</button>
         <button onclick="show('#updateperson')">edytuj</button>
         <button onclick="show('#getperson')">wyswietl 1</button>
-        <button onclick="show('#login')">zaloguj się</button>
         <button id="color">change color theme</button>
     </nav>
     <div id="addperson">
@@ -93,12 +94,24 @@
     <p id="updresponse"></p>
     </div>
     <div id="login">
+        <h1>Logowanie</h1>
         <form>
             <label>Username: <input type="text" id="username"></label>
             <label>Password: <input type="password" id="password"></label>
             <input type="button" value="zaloguj" id="loginbtn">
+            <label>nie masz konta? <input type="button" value="zarejestruj się" onclick="show('#signup')"></label>
         </form>
+        <p id="loginresponse"></p>
 
+    </div>
+    <div id="signup">
+        <h1>Rejestracja</h1>
+        <form>
+            <label>Username: <input type="text" id="regname"></label>
+            <label>Password: <input type="password" id="regpass"></label>
+            <input type="button" value="zarejestruj się" id="regbtn">
+        </form>
+        <p id="signupresponse"></p>
     </div>
 </body>
     <script src="scripts/index_dj.js"></script>

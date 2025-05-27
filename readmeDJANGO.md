@@ -11,4 +11,5 @@ daphne personsapi.asgi:application
 ```
 the api will launch on port 8000
 ## example html site using the api 
-```/src/index2.html```
+```/client/index_jd.html```
+you have to create an account using the GUI on the site in order to see the database

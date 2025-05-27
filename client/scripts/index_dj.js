@@ -1,4 +1,4 @@
-const token = localStorage.getItem('access_token');
+var token = localStorage.getItem('access_token');
  function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refresh_token');
   if (!refreshToken) {
@@ -15,9 +15,11 @@ const token = localStorage.getItem('access_token');
   .then(response => response.json().then(data => ({ status: response.status, body: data })))
   .then(({ status, body }) => {
     if (status === 200) {
+    
       localStorage.setItem('access_token', body.access);
+      token = body.access
       console.log('Access token refreshed!');
-      return body.access;  // resolve with new access token
+      return body.access; 
     } else {
       console.error('Failed to refresh token:', body);
       return Promise.reject(body);
@@ -162,8 +164,18 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
 
 
             res+="</tr>"
-            fetch("http://127.0.0.1:8000/persons")
-                .then(response=>response.json())
+            fetch("http://127.0.0.1:8000/persons", {headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },})
+                .then(response => {
+                    if (response.status === 403) {
+                    throw new Error("Access denied");
+                }
+                    if (!response.ok) {
+                        throw response; 
+                    }
+                    return response.json(); })
                 .then(response=>{
                 console.log(response)
                 let i=0
@@ -200,6 +212,10 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
                     
                 getallresponse.innerHTML = res
         })
+        .catch(error=>{
+            console.error("error: "+error)
+            getallresponse.innerHTML=error
+        })
     }
     getallpersons()
     function getCookie(name) {
@@ -218,6 +234,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             });
             document.querySelector(name).style.display = "block";
             }
+            
             color.onclick=()=>{
                 if(document.body.getAttribute("class")=="darkmode"){
                     document.body.setAttribute("class", "") 
@@ -340,15 +357,88 @@ loginbtn.onclick=()=>{
       if (status === 200) {
         localStorage.setItem('access_token', body.access);
         localStorage.setItem('refresh_token', body.refresh);
-        alert("Login successful!");
+        loginresponse.innerHTML = ("Login successful!");
+        loginmenubtn.style.display = "none"
+        logout.style.display = "block"
+        refreshAccessToken()
+        .then(() => getallpersons())
+        setTimeout(() => {
+show("#addperson")
+}, 2000);
+        
       } else {
-        alert("Login failed: " + (body.detail || 'Unknown error'));
+        loginresponse.innerHTML = ("Login failed: " + (body.detail || 'Unknown error'));
       }
     })
     .catch(error => {
       console.error('Login error:', error);
-      alert("Something went wrong. Check the console.");
+      loginresponse.innerHTML = ("Something went wrong. Check the console.");
     });
 }
-     show("#addperson")
+regbtn.onclick=()=>{
+    const uname = regname.value;
+    const pass = regpass.value;
+    fetch("http://127.0.0.1:8000/users/", {
+        method: "POST",
+        headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 'username':uname, 'password':pass })
+
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+      if (status === 201) {
+        signupresponse.innerHTML = ("Sign up successful!");
+
+        fetch('http://localhost:8000/api/token/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 'username':uname, 'password':pass })
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+      if (status === 200) {
+        localStorage.setItem('access_token', body.access);
+        localStorage.setItem('refresh_token', body.refresh);
+        signupresponse.innerHTML += ("<br>Login successful!");
+        loginmenubtn.style.display = "none"
+        logout.style.display = "block"
+        refreshAccessToken()
+        .then(() => getallpersons())
+         setTimeout(() => {
+show("#addperson")
+}, 2000);
+
+      } else {
+        signupresponse.innerHTML += ("<br>Login failed: " + (body.detail || 'Unknown error'));
+      }
+    })
+      } else {
+        signupresponse.innerHTML = ("Sign up failed: " + (body.detail || 'Unknown error'));
+      }
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+      signupresponse.innerHTML = ("Something went wrong. Check the console.");
+    });
+
+}
+logout.onclick=()=>{
+    localStorage.removeItem("access_token")
+    localStorage.removeItem("refresh_token")
+    loginmenubtn.style.display = "block"
+    logout.style.display = "none"
+    loginresponse.innerHTML = ("");
+    signupresponse.innerHTML = ("");
+    token = null
+}
+if(localStorage.getItem("access_token")!=null){
+            loginmenubtn.style.display = "none"
+        logout.style.display = "block"
+        show("#addperson")
+}
+else show("#login")
     
