@@ -100,8 +100,10 @@
             <label>Password: <input type="password" id="password"></label>
             <input type="button" value="zaloguj" id="loginbtn">
             <label>nie masz konta? <input type="button" value="zarejestruj się" onclick="show('#signup')"></label>
+            <label>zapomniałeś hasła? <input type="button" value="resetuj hasło" onclick="show('#resetpassword')"></label>
         </form>
         <p id="loginresponse"></p>
+        <p id="resetResponse"></p>
 
     </div>
     <div id="signup">
@@ -109,9 +111,18 @@
         <form>
             <label>Username: <input type="text" id="regname"></label>
             <label>Password: <input type="password" id="regpass"></label>
+            <label>Email: <input type="email" id="regmail"></label>
             <input type="button" value="zarejestruj się" id="regbtn">
         </form>
         <p id="signupresponse"></p>
+    </div>
+    <div id="resetpassword">
+        <form>
+        <input type="email" id="resetEmail" placeholder="Wpisz swój email"><br>
+<input type="button" value="resetuj hasło" id="passresetbtn" onclick="sendPasswordResetEmail()">
+</form>
+<p id="resetResponse"></p>
+
     </div>
 </body>
     <script src="scripts/index_dj.js"></script>

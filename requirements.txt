@@ -12,3 +12,4 @@ mkdocs-material
 djangorestframework
 django-cors-headers
 daphne
+djoser

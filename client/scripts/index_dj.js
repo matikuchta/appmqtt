@@ -378,12 +378,13 @@ show("#addperson")
 regbtn.onclick=()=>{
     const uname = regname.value;
     const pass = regpass.value;
+    const mail = regmail.value;
     fetch("http://127.0.0.1:8000/users/", {
         method: "POST",
         headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ 'username':uname, 'password':pass })
+      body: JSON.stringify({ 'username':uname, 'password':pass, 'email':mail})
 
     })
     .then(response => response.json().then(data => ({ status: response.status, body: data })))
@@ -441,4 +442,37 @@ if(localStorage.getItem("access_token")!=null){
         show("#addperson")
 }
 else show("#login")
+
+function sendPasswordResetEmail() {
+  const email = document.getElementById('resetEmail').value.trim();
+  const resetResponse = document.getElementById('resetResponse');
+
+  if (!email) {
+    resetResponse.innerText = 'Proszę wpisać adres e-mail.';
+    return;
+  }
+
+  fetch('http://localhost:8000/auth/users/reset_password/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email })
+  })
+  .then(response => {
+    if (response.status === 204) {
+      resetResponse.innerText = 'E-mail do resetu hasła został wysłany, sprawdź swoją skrzynkę.';
+    } else {
+      return response.json().then(data => {
+        resetResponse.innerText = data.email ? data.email.join(' ') : 'Coś poszło nie tak.';
+      });
+    }
+  })
+  .catch(error => {
+    resetResponse.innerText = 'Błąd połączenia z serwerem.';
+    console.error(error);
+  });
+}
+
+
     

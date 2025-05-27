@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'persons'
+    'djoser',
+    'persons',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'personsapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,4 +139,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly', 
     ]
 }
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'password_reset_confirm/?uid={uid}&token={token}',
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+}

@@ -7,6 +7,9 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .permissions import IsAdminOrManager, IsManagerOrAdminForWrite, IsAdminOrCreateOnly, IsAuthenticatedForWrite
+from django.shortcuts import render
+from django.views import View
+from django.http import HttpResponseBadRequest
 
 # Job ViewSet
 class JobViewSet(viewsets.ModelViewSet):
@@ -43,4 +46,13 @@ class UserRoleViewSet(viewsets.ModelViewSet):
     queryset = UserRole.objects.all()
     serializer_class = UserRoleSerializer
     permission_classes = [IsAdminUser]
+
+
+class ResetPasswordConfirmView(View):
+    def get(self, request):
+        uid = request.GET.get('uid')
+        token = request.GET.get('token')
+        if not uid or not token:
+            return HttpResponseBadRequest("Missing uid or token.")
+        return render(request, 'password_reset_confirm.html', {'uid': uid, 'token': token})
 
