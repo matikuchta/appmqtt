@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -139,8 +139,15 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly', 
     ]
 }
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'gmail_backend.GmailAPIEmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply.appmqtt@gmail.com'
+
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'password_reset_confirm/?uid={uid}&token={token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'EMAIL': {
+        'password_reset': 'persons.reset_email.PasswordResetEmail',
+    },
 }
+

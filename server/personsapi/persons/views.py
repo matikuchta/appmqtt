@@ -10,6 +10,11 @@ from .permissions import IsAdminOrManager, IsManagerOrAdminForWrite, IsAdminOrCr
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseBadRequest
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+from gmail_send import send_gmail
+from django.contrib.auth.forms import PasswordResetForm
+from django.template.loader import render_to_string
 
 # Job ViewSet
 class JobViewSet(viewsets.ModelViewSet):
@@ -55,4 +60,34 @@ class ResetPasswordConfirmView(View):
         if not uid or not token:
             return HttpResponseBadRequest("Missing uid or token.")
         return render(request, 'password_reset_confirm.html', {'uid': uid, 'token': token})
+
+class GmailPasswordResetView(PasswordResetView):
+    form_class = PasswordResetForm
+    success_url = reverse_lazy('password_reset_done')
+    email_template_name = 'registration/password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+
+    def form_valid(self, form):
+        # zamiast wysyłać przez send_mail(), wysyłamy przez Gmail API
+        for user in self.get_users(form.cleaned_data["email"]):
+            context = {
+                'email': user.email,
+                'domain': self.request.get_host(),
+                'site_name': 'TwojaAplikacja',
+                'uid': self.get_user_id(user),
+                'user': user,
+                'token': self.token_generator.make_token(user),
+                'protocol': 'https' if self.request.is_secure() else 'http',
+            }
+            subject = render_to_string(self.subject_template_name, context).strip()
+            body = render_to_string(self.email_template_name, context)
+
+            send_gmail(subject, body, user.email) 
+
+        return super().form_valid(form)
+
+    def get_user_id(self, user):
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        return urlsafe_base64_encode(force_bytes(user.pk))
 

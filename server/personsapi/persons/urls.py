@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import PersonViewSet, JobViewSet, PersonByPeselView
-from .views import UserViewSet, UserRoleViewSet, ResetPasswordConfirmView
+from .views import UserViewSet, UserRoleViewSet, ResetPasswordConfirmView, GmailPasswordResetView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # Create a router and register the viewsets
@@ -16,7 +16,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-     path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('password_reset_confirm/', ResetPasswordConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/', GmailPasswordResetView.as_view(), name='password_reset'),
 ]
