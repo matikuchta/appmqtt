@@ -7,3 +7,4 @@ desktop.ini
 .venv
 my-project/site/
 src/style.css.map
+server/personsapi/staticfiles

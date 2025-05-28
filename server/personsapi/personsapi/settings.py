@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -151,3 +152,12 @@ DJOSER = {
     },
 }
 
+STATIC_URL = '/static/'
+
+# Where Django will collect static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Optional if you keep static files in your app directories
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

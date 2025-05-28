@@ -1,3 +1,9 @@
+let config = {
+  server: "http://127.0.0.1",
+  port: "8000"
+}
+let path = config.server + ":" + config.port
+
 var token = localStorage.getItem('access_token');
  function refreshAccessToken() {
   const refreshToken = localStorage.getItem('refresh_token');
@@ -5,7 +11,7 @@ var token = localStorage.getItem('access_token');
     return Promise.reject('No refresh token found');
   }
 
-  return fetch('http://localhost:8000/api/token/refresh/', {
+  return fetch(path+'/api/token/refresh/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -53,7 +59,7 @@ refreshAccessToken()
                     response.forEach(e => {
                         jobdict[e["id"]]=e["nazwa"]
                     });
-                    console.log(jobdict)
+                    //console.log(jobdict)
                     jobs = jobdict
                     
         stanowisko.innerHTML = "";
@@ -217,7 +223,8 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             getallresponse.innerHTML=error
         })
     }
-    getallpersons()
+    refreshAccessToken()
+    .then(getallpersons())
     function getCookie(name) {
                 return document.cookie
                 .split('; ')
@@ -345,7 +352,7 @@ loginbtn.onclick=()=>{
     const uname = username.value;
     const pass = password.value;
 
-    fetch('http://localhost:8000/api/token/', {
+    fetch(path+'/api/token/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -392,7 +399,7 @@ regbtn.onclick=()=>{
       if (status === 201) {
         signupresponse.innerHTML = ("Sign up successful!");
 
-        fetch('http://localhost:8000/api/token/', {
+        fetch(path+'/api/token/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -452,7 +459,7 @@ function sendPasswordResetEmail() {
     return;
   }
 
-  fetch('http://localhost:8000/auth/users/reset_password/', {
+  fetch(path+'/auth/users/reset_password/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

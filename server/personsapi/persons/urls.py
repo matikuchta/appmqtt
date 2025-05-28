@@ -3,6 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import PersonViewSet, JobViewSet, PersonByPeselView
 from .views import UserViewSet, UserRoleViewSet, ResetPasswordConfirmView, GmailPasswordResetView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Create a router and register the viewsets
 router = DefaultRouter()
@@ -21,3 +23,5 @@ urlpatterns = [
     path('password_reset_confirm/', ResetPasswordConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/', GmailPasswordResetView.as_view(), name='password_reset'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
