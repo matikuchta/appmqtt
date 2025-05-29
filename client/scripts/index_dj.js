@@ -39,7 +39,7 @@ var token = localStorage.getItem('access_token');
 refreshAccessToken()
 
          function getpersonid(pesel){
-        return fetch("http://127.0.0.1:8000/person/pesel/"+pesel, {
+        return fetch(path+"/person/pesel/"+pesel, {
              method: "GET",
     headers: {
       "Authorization": 'Bearer ' + token,
@@ -52,7 +52,7 @@ refreshAccessToken()
                 return response["id"]})
      }
      jobs={}
-        fetch("http://127.0.0.1:8000/jobs/")
+        fetch(path+"/jobs/")
                 .then(response=>response.json())
                 .then(response=>{
                     jobdict={}
@@ -170,7 +170,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
 
 
             res+="</tr>"
-            fetch("http://127.0.0.1:8000/persons", {headers: {
+            fetch(path+"/persons", {headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 },})
@@ -256,7 +256,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
             add.onclick = () => {
          let data = new Date()
          data = data.toISOString().split('T')[0]
-    fetch('http://127.0.0.1:8000/persons/', {
+    fetch(path+'/persons/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -291,7 +291,7 @@ if(dataZatrudnienia.value !== '') updatedData.data_zatrudnienia = dataZatrudnien
 };
 get1.onclick=()=>{
             
-            a="http://127.0.0.1:8000/person/pesel/"+getpesel.value
+            a=path+"/person/pesel/"+getpesel.value
             console.log(a)
                 fetch(a)
                 .then(response=>response.json())
@@ -320,7 +320,7 @@ get1.onclick=()=>{
         .then(res => {
             let id = res;  // Zmienna id z odpowiedzi
             console.log(id)
-            let a = "http://127.0.0.1:8000/persons/" + id+"/";  // Budowanie URL
+            let a = path+"/persons/" + id+"/";  // Budowanie URL
 
             console.log(a);  // Możesz sprawdzić wynik URL w konsoli
 
@@ -335,7 +335,7 @@ function deleteperson(pesel){
         .then(res => {
             let id = res;  // Zmienna id z odpowiedzi
             console.log(id)
-            let a = "http://127.0.0.1:8000/persons/" + id+"/";  // Budowanie URL
+            let a = path+"/persons/" + id+"/";  // Budowanie URL
 
             console.log(a);  // Możesz sprawdzić wynik URL w konsoli
 
@@ -386,7 +386,7 @@ regbtn.onclick=()=>{
     const uname = regname.value;
     const pass = regpass.value;
     const mail = regmail.value;
-    fetch("http://127.0.0.1:8000/users/", {
+    fetch(path+"/users/", {
         method: "POST",
         headers: {
         'Content-Type': 'application/json'
