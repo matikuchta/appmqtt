@@ -50,6 +50,7 @@ function getpersonid(pesel) {
     .then((response) => response.json())
     .then((response) => {
       console.log(response);
+      if (response["status"]) return response["status"]
       return response["id"];
     });
 }
@@ -292,8 +293,6 @@ color.onclick = () => {
   }
 };
 add.onclick = () => {
-  let data = new Date();
-  data = data.toISOString().split("T")[0];
   fetch(path + "/persons/", {
     method: "POST",
     headers: {
@@ -307,14 +306,23 @@ add.onclick = () => {
       stanowisko: stanowisko.value,
       data_urodzenia: data_urodzenia.value,
       data_zatrudnienia: data_zatrudnienia.value,
-      data_utworzenia: data,
-      data_modyfikacji: data,
     }),
   })
     .then((response) => {
       console.log(response);
       if (!response.ok) {
         addresponse.innerHTML = "Błąd: nie dodano osoby";
+        getpersonid(pesel.value)
+        .then((id)=>{
+          console.log(id)
+            if(!isNaN(id)){
+          addresponse.innerHTML+="<br>osoba o takim peselu już istnieje"
+        }
+        
+        if (!imie.value || !nazwisko.value || !pesel.value || !data_urodzenia.value || !data_zatrudnienia.value) {
+  addresponse.innerHTML += "<br>Proszę uzupełnić wszystkie pola formularza";
+}
+})
         return response.text(); // Jeśli odpowiedź ma błąd, nie próbujemy jej parsować jako JSON
       }
       response.json(); // Jeśli odpowiedź jest poprawna, parsujemy ją jako JSON

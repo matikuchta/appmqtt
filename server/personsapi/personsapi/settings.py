@@ -145,7 +145,7 @@ EMAIL_BACKEND = 'gmail_backend.GmailAPIEmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply.appmqtt@gmail.com'
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'password_reset_confirm/?uid={uid}&token={token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/password_reset_confirm/?uid={uid}&token={token}',
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'EMAIL': {
         'password_reset': 'persons.reset_email.PasswordResetEmail',
