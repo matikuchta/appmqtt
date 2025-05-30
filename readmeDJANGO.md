@@ -27,6 +27,7 @@ let config = {
   port: "5140",
 };
 ```
+after configuration, you have to change the values in the ```server/personsapi/templates/password_reset_confirm.html``` to the same values
 
 
 if your server cannot find some js or css files, use 

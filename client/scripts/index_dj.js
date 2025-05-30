@@ -1,6 +1,8 @@
 let config = {
   server: "http://192.168.8.129",
   port: "5140",
+  //server: "http://127.0.0.1",
+  //port: "8000",
 };
 let path = config.server + ":" + config.port + "/api";
 
